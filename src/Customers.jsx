@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./index.css";
 
-class Main extends Component {
+class Customers extends Component {
   state = {
     custList: [
       {id: 1, order: "https://source.unsplash.com/random/?sausage+pizza", last: "Crede", first: "Joe", email: "jcrede@fake.com", phone: "(555) 242-4242" },
@@ -17,7 +17,6 @@ class Main extends Component {
     return (
       <React.Fragment>
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Customer List<span className="ml-3 badge badge-pill badge-primary">{this.state.custCount}</span></h3>
-        <button className="ml-3 btn btn-success" onClick={this.custRefresh}>Refresh</button>
         <div className="m-3">
           <table className="table table-bordered table-hover" id="custTable">
             <thead className="thead-light">
@@ -71,4 +70,4 @@ class Main extends Component {
   };
 };
 
-export default Main;
+export default Customers;
