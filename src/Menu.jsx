@@ -14,9 +14,9 @@ class Menu extends Component {
               <h5 className="card-title">{this.state.item.pizza}</h5>
               <h6 className="card-subtitle mb-2 text-muted">${this.state.item.price}</h6>
               <div className="btn-group mt-1 mb-3" role="group" aria-label="button group">
-                <button type="button" className="btn btn-success" onClick={this.props.decreaseQty}>-</button>
+                <button type="button" className="btn btn-success" onClick={()=>{this.props.decreaseQty(this.state.item, 0)}}>-</button>
                 <span className="border border-success px-3">{this.state.item.quantity}</span>
-                <button type="button" className="btn btn-success" onClick={()=>{this.props.increaseQty(this.state.item)}}>+</button>
+                <button type="button" className="btn btn-success" onClick={()=>{this.props.increaseQty(this.state.item, 5)}}>+</button>
               </div>
               <br></br>
               <button className="btn btn-primary">Order</button>

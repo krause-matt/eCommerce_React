@@ -8,7 +8,7 @@ class Cart extends Component {
     items: [
       {id: 1, pizza: "Cheese", image: "https://source.unsplash.com/random/?cheese+pizza", price: 10, quantity: 0},
       {id: 2, pizza: "Sausage", image: "https://source.unsplash.com/random/?sausage+pizza", price: 12, quantity: 0},
-      {id: 3, pizza: "Pepperoni", image: "https://source.unsplash.com/random/?pepperoni+pizza", price: 12, quantity: 1},
+      {id: 3, pizza: "Pepperoni", image: "https://source.unsplash.com/random/?pepperoni+pizza", price: 12, quantity: 0},
       {id: 4, pizza: "Veggie", image: "https://source.unsplash.com/random/?veggie+pizza", price: 12, quantity: 0},
       {id: 5, pizza: "Deluxe", image: "https://source.unsplash.com/random/?pizza", price: 14, quantity: 0}
     ],
@@ -30,15 +30,22 @@ class Cart extends Component {
     );
   };
 
-  decreaseQty = () => {
-    console.log("decrease");
-  };
-
-  increaseQty = (itemObject) => {
+  decreaseQty = (itemObject, minVal) => {
     const allItems = [...this.state.items];
     const index = allItems.indexOf(itemObject);
-    allItems[index].quantity++;
-    this.setState({items: allItems});
+    if (allItems[index].quantity > minVal) {
+      allItems[index].quantity--;
+      this.setState({ items: allItems });
+    };    
+  };
+
+  increaseQty = (itemObject, maxVal) => {
+    const allItems = [...this.state.items];
+    const index = allItems.indexOf(itemObject);
+    if (allItems[index].quantity < maxVal) {
+      allItems[index].quantity++;
+      this.setState({ items: allItems });
+    };    
   };
 };
 
