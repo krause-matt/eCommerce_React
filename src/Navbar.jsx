@@ -7,7 +7,7 @@ class Navbar extends Component {
         <nav className="navbar navbar-expand-md navbar-dark bg-primary">
           <a className="navbar-brand" href="/#">
             <img src="images/pizza.svg" width="40" height="40" className="d-inline-block align-top" alt="" />
-            Pizza Store
+            <b>Pizza Store</b>
           </a>
 
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
