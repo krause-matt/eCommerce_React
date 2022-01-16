@@ -8,7 +8,7 @@ class Cart extends Component {
     super(props)
     this.state = {
       items: [],
-      itemCount: 5
+      itemCount: ""
     };
   };
 
@@ -49,13 +49,20 @@ class Cart extends Component {
     const allItems = [...this.state.items];
     const index = allItems.indexOf(itemObject);
     allItems.splice(index, 1);
-    this.setState({ items: allItems });
+    this.setState({ 
+      items: allItems,
+      itemCount: allItems.length
+    });
   };
 
   componentDidMount = async () => {
     const response = await fetch("http://localhost:5000/items", {method: "GET"})
     const formattedResponse = await response.json();
-    this.setState({items: formattedResponse})
+    const itemsLength = Object.keys(formattedResponse).length;
+    this.setState({
+      items: formattedResponse,
+      itemCount: itemsLength    
+    });
   };
 };
 

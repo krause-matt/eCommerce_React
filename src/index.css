@@ -1,3 +1,7 @@
+.page-title {
+  color: white;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -7,7 +11,7 @@
 }
 
 .login-card {
-  transform: translateY(-3rem);
+  transform: translateY(-4rem);
   width: max(25vw, 18rem);
 }
 

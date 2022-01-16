@@ -1,16 +1,25 @@
 import React, { Component } from "react";
-import Login from "./Login";
+
 import Navbar from "./Navbar";
+import Login from "./Login";
 import Customers from "./Customers";
 import Cart from "./Cart";
+import Menu from "./Menu";
+
+import { Route, Routes} from "react-router";
+import { BrowserRouter } from "react-router-dom";
 
 class App extends Component {
   render() {
     return (
-      <React.Fragment>
+      <BrowserRouter>
         <Navbar />
-        <Cart />
-      </React.Fragment>
+        <Routes>
+            <Route exact path="/" element={<Login />} />
+            <Route exact path="/customers" element={<Customers />} />
+            <Route exact path="/menu" element={<Cart />} />
+        </Routes>
+      </BrowserRouter>
     );
   };
 };
