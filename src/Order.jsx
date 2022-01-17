@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
+import orderServer from "./api/orders";
 
 import Navbar from "./Navbar";
 import Cart from "./Cart";
@@ -12,7 +13,7 @@ class Order extends Component {
     sizes: [{ size: "Small", price: 10 }, { size: "Medium", price: 13 }, { size: "Large", price: 15 }],
     toppings: [{ id: 1, topping: "Extra Cheese" }, { id: 2, topping: "Green Pepper" }, { id: 3, topping: "Olive" }],
     sizeSelect: "",
-    priceSelect: "",    
+    priceSelect: "",
     toppingSelect: [{ topping: "Extra Cheese", added: false }, { topping: "Green Pepper", added: false }, { topping: "Olive", added: false }],
     sizeWarning: ""
   }
@@ -68,7 +69,8 @@ class Order extends Component {
   sizeSelect = (target) => {
     this.setState({
       sizeSelect: target.id,
-      priceSelect: target.value })
+      priceSelect: target.value
+    })
   }
 
   toppingSelect = (target) => {
@@ -87,16 +89,16 @@ class Order extends Component {
     )
   }
 
-  orderProcess = () => {
+  orderProcess = async () => {
     if (!this.state.sizeSelect) {
-      this.setState({sizeWarning: "Please select a size"})
+      this.setState({ sizeWarning: "Please select a size" })
     } else {
-      this.setState({sizeWarning: ""})
+      this.setState({ sizeWarning: "" })
     }
     const toppingExtraCheese = document.querySelector("#toppingAmount-1")
     const toppingGreenPepper = document.querySelector("#toppingAmount-2")
     const toppingOlive = document.querySelector("#toppingAmount-3")
-    
+
     console.log("Size", this.state.sizeSelect);
     console.log("Price", this.state.priceSelect);
     for (const item of this.state.toppingSelect) {
@@ -104,6 +106,12 @@ class Order extends Component {
         console.log("Topping", item.topping)
       }
     }
+
+    const order1 = { "size": "small", "price": 10 }
+    const order2 = { size: "small", price: 10 }
+    //const result1 = await fetch("http://localhost:5000/order", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(order) })
+    const result2 = await orderServer.post("/orders", order2);
+
   }
 
 };
