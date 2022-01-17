@@ -21,9 +21,6 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse font-weight-bold" id="navbarSupportedContent">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item active mx-3">
-                <Link to="/customers" className="nav-link"><h3><b>Customers</b></h3></Link>
-              </li>
-              <li className="nav-item mx-3">
                 <Link to="/menu" className="nav-link"><h3><b>Menu</b></h3></Link>
               </li>
               <li className="nav-item mx-3">

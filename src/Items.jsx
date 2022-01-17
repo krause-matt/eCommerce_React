@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Items extends Component {
   state = {
@@ -25,7 +26,7 @@ class Items extends Component {
                 <button type="button" className="btn btn-success" onClick={() => { this.props.increaseQty(this.state.item, 5) }}>+</button>
               </div>
               <br></br>
-              <button className="btn btn-warning m-1">Customize</button>
+              <Link to="/order" id={this.state.item.pizza} className="btn btn-warning m-1" onClick={(e) => {console.log(e.target.id)}}>Customize</Link>
               <button className="btn btn-primary m-1">Add to Cart</button>
             </div>
           </div>

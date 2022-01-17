@@ -1,21 +1,23 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 import Navbar from "./Navbar";
+import Cart from "./Cart";
 
 class Order extends Component {
 
   state = {
     image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
     sizes: [{ size: "Small", price: 10 }, { size: "Medium", price: 13 }, { size: "Large", price: 15 }],
-    toppings: [{id: 1, topping: "Extra Cheese"}, {id: 2, topping: "Green Pepper"}, {id: 3, topping: "Olive"}],
-    priceSelect: "",
-    toppingSelect: [{topping: "Extra Cheese", added: false}, {topping: "Green Pepper", added: false}, {topping: "Olive", added: false}]
+    toppings: [{ id: 1, topping: "Extra Cheese" }, { id: 2, topping: "Green Pepper" }, { id: 3, topping: "Olive" }],
+    sizeSelect: "",
+    priceSelect: "",    
+    toppingSelect: [{ topping: "Extra Cheese", added: false }, { topping: "Green Pepper", added: false }, { topping: "Olive", added: false }],
+    sizeWarning: ""
   }
 
   render() {
-    {console.log("priceSelect", this.state.priceSelect)}
-    {console.log("toppingSelect", this.state.toppingSelect)}
     return (
       <React.Fragment>
         <Navbar />
@@ -33,21 +35,23 @@ class Order extends Component {
                 {this.state.sizes.map((item) => {
                   return (
                     <div key={item.size}>
-                      <input type="radio" id={item.size} name="size" value={item.price} onClick={(event) => {this.sizeSelect(event.target.value)}} />
+                      <input type="radio" id={item.size} name="size" value={item.price} onClick={(event) => { this.sizeSelect(event.target) }} />
                       <label className="ml-3" for={item.size}>{`${item.size}: $${item.price}`}</label>
                     </div>
                   )
                 })}
+                <div className="text-danger">{this.state.sizeWarning}</div>
               </div>
             </div>
             <div className="col-md-6 border-left">
-              <div className="card-header"><h4>Select Toppings</h4></div>
+              <div className="card-header"><h4>Additional Toppings</h4></div>
               <div className="card-body">
                 {this.state.toppings.map((item) => {
                   return (
                     <div key={item.id}>
-                      <input type="checkbox" id={item.id} name={item.topping} value={item.id} onClick={(e) => {this.toppingSelect(e.target)}}/>
+                      <input type="checkbox" id={item.id} name={item.topping} value={item.id} onClick={(event) => { this.toppingSelect(event.target) }} />
                       <label className="ml-3" for={item.id}>{item.topping}</label>
+                      {this.state.toppingSelect[item.id - 1].added ? this.toppingAmount(item.id) : ""}
                     </div>
                   )
                 })}
@@ -55,20 +59,52 @@ class Order extends Component {
             </div>
           </div>
         </div>
+        <button className="btn btn-warning m-3" onClick={this.orderProcess}>TEST</button>
+        <Link to="/cart" className="btn btn-success m-3">Add to Cart</Link>
       </React.Fragment>
-
     );
   };
 
-sizeSelect = (value) => {
-  this.setState({priceSelect: value})
-}
+  sizeSelect = (target) => {
+    this.setState({
+      sizeSelect: target.id,
+      priceSelect: target.value })
+  }
 
-toppingSelect = (target) => {
-  const allToppings = [...this.state.toppingSelect];
-  allToppings[target.value - 1].added = target.checked;
-  this.setState({toppingSelect: allToppings})
-}
+  toppingSelect = (target) => {
+    const allToppings = [...this.state.toppingSelect];
+    allToppings[target.value - 1].added = target.checked;
+    this.setState({ toppingSelect: allToppings })
+  }
+
+  toppingAmount = (itemId) => {
+    return (
+      <select id={`toppingAmount-${itemId}`} className="ml-3" name="toppingAmount">
+        <option value="normal">Normal</option>
+        <option value="easy">Easy</option>
+        <option value="extra">Extra</option>
+      </select>
+    )
+  }
+
+  orderProcess = () => {
+    if (!this.state.sizeSelect) {
+      this.setState({sizeWarning: "Please select a size"})
+    } else {
+      this.setState({sizeWarning: ""})
+    }
+    const toppingExtraCheese = document.querySelector("#toppingAmount-1")
+    const toppingGreenPepper = document.querySelector("#toppingAmount-2")
+    const toppingOlive = document.querySelector("#toppingAmount-3")
+    
+    console.log("Size", this.state.sizeSelect);
+    console.log("Price", this.state.priceSelect);
+    for (const item of this.state.toppingSelect) {
+      if (item.added) {
+        console.log("Topping", item.topping)
+      }
+    }
+  }
 
 };
 
