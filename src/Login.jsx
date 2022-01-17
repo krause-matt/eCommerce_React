@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 class Login extends Component {
@@ -44,7 +44,6 @@ class Login extends Component {
     const validateEmail = () => {
       return regexEmail.test(this.state.email)
     }
-    console.log(validateEmail(), "validate email");
 
     if (this.state.email === "" || !validateEmail()) {
       this.setState({emailCheckMessage: "Please enter valid email"})
