@@ -27,7 +27,7 @@ class Navbar extends Component {
                 <Link to="/order" className="nav-link"><h3><b>Order</b></h3></Link>
               </li>
               <li className="nav-item ml-3">
-                <Link to="/menu" className="nav-link" href="/menu"><h3><b>Cart</b></h3></Link>
+                <Link to="/cart" className="nav-link"><h3><b>Cart</b></h3></Link>
               </li>
               <li>
                 <span className="badge badge-pill badge-light">{this.props.cartNum}</span>

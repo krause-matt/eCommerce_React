@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Navbar from "./Navbar";
-import Items from "./Items";
+import MenuItem from "./MenuItem";
 
 
 class Menu extends Component {
@@ -16,12 +16,12 @@ class Menu extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar cartNum={this.state.itemCount} />
-        <h3 className="m-3 pb-2 font-weight-bold border-bottom">Menu<span className="ml-3 badge badge-pill badge-primary">{this.state.itemCount}</span></h3>
+        <Navbar />
+        <h3 className="m-3 pb-2 font-weight-bold border-bottom">Menu</h3>
         <div className="m-3">
           <div className="row row-cols-1 row-cols-lg-3">
             {this.state.items.map((item) => {
-              return <Items key={item.id} item={item} decreaseQty={this.decreaseQty} increaseQty={this.increaseQty} deleteItem={this.deleteItem} />
+              return <MenuItem key={item.id} item={item} decreaseQty={this.decreaseQty} increaseQty={this.increaseQty} deleteItem={this.deleteItem} />
             })}
           </div>
         </div>

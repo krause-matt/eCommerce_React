@@ -22,6 +22,7 @@ class Order extends Component {
     return (
       <React.Fragment>
         <Navbar />
+        <h3 className="m-3 pb-2 font-weight-bold border-bottom">Customize Order</h3>
         <div className="card m-3">
           <div className="row no-gutters">
             <div className="col-md-3">
@@ -108,9 +109,10 @@ class Order extends Component {
     }
 
     const order1 = { "size": "small", "price": 10 }
-    const order2 = { size: "small", price: 10 }
+    const order2 = { qty: 1, size: "small", price: 10 }
     //const result1 = await fetch("http://localhost:5000/order", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(order) })
     const result2 = await orderServer.post("/orders", order2);
+    //const deleteTest = await orderServer.delete("/orders/1");
 
   }
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class Items extends Component {
+class MenuItem extends Component {
   state = {
     item: this.props.item
   }
@@ -36,4 +36,4 @@ class Items extends Component {
   };
 };
 
-export default Items;
+export default MenuItem;

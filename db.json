@@ -52,6 +52,23 @@
     }
   ],
   "orders": [
-
+    {
+      "qty": 1,
+      "size": "small",
+      "price": 10,
+      "id": 1
+    },
+    {
+      "qty": 1,
+      "size": "small",
+      "price": 10,
+      "id": 2
+    },
+    {
+      "qty": 1,
+      "size": "small",
+      "price": 10,
+      "id": 3
+    }
   ]
 }
