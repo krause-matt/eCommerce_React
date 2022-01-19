@@ -15,13 +15,15 @@ class Order extends Component {
     sizeSelect: "",
     priceSelect: "",
     toppingSelect: [{ topping: "Extra Cheese", added: false }, { topping: "Green Pepper", added: false }, { topping: "Olive", added: false }],
-    sizeWarning: ""
+    sizeWarning: "",
+    orders: [],
+    orderNum: ""
   }
 
   render() {
     return (
       <React.Fragment>
-        <Navbar />
+        <Navbar cartNum={this.state.orderNum}/>
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Customize Order</h3>
         <div className="card m-3">
           <div className="row no-gutters">
@@ -61,7 +63,7 @@ class Order extends Component {
             </div>
           </div>
         </div>
-        <button className="btn btn-warning m-3" onClick={this.orderProcess}>TEST</button>
+        <button className="btn btn-warning m-3" onClick={(event) => {this.orderProcess(event)}}>TEST</button>
         <Link to="/cart" className="btn btn-success m-3">Add to Cart</Link>
       </React.Fragment>
     );
@@ -90,9 +92,10 @@ class Order extends Component {
     )
   }
 
-  orderProcess = async () => {
+  orderProcess = async (e) => {
     if (!this.state.sizeSelect) {
       this.setState({ sizeWarning: "Please select a size" })
+      return
     } else {
       this.setState({ sizeWarning: "" })
     }
@@ -100,20 +103,24 @@ class Order extends Component {
     const toppingGreenPepper = document.querySelector("#toppingAmount-2")
     const toppingOlive = document.querySelector("#toppingAmount-3")
 
-    console.log("Size", this.state.sizeSelect);
-    console.log("Price", this.state.priceSelect);
     for (const item of this.state.toppingSelect) {
       if (item.added) {
         console.log("Topping", item.topping)
       }
     }
 
-    const order1 = { "size": "small", "price": 10 }
-    const order2 = { qty: 1, size: "small", price: 10 }
-    //const result1 = await fetch("http://localhost:5000/order", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(order) })
-    const result2 = await orderServer.post("/orders", order2);
-    //const deleteTest = await orderServer.delete("/orders/1");
+    const currentOrder = {};
+    currentOrder.size = this.state.sizeSelect;
+    currentOrder.price = this.state.priceSelect;
+    const orderAdd = [currentOrder];
+    this.setState({orders: orderAdd})
 
+    //const deleteTest = await orderServer.delete("/orders/1");
+    const result = await orderServer.post("/orders", currentOrder);
+
+    const serverResponse = await orderServer.get("/orders");
+    const currentOrders = [...serverResponse.data];
+    this.setState({ orderNum: currentOrders.length })
   }
 
 };
