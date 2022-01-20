@@ -30,7 +30,7 @@ class Navbar extends Component {
                 <Link to="/cart" className="nav-link"><h3><b>Cart</b></h3></Link>
               </li>
               <li>
-                <span className="badge badge-pill badge-light">{this.props.cartNum}</span>
+                <span className="badge badge-pill badge-light">{this.props.cartNum? this.props.cartNum : ""}</span>
               </li>
             </ul>
           </div>

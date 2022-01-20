@@ -5,6 +5,7 @@ import orderServer from "./api/orders";
 
 import Navbar from "./Navbar";
 import Cart from "./Cart";
+import orders from "./api/orders";
 
 class Order extends Component {
 
@@ -23,7 +24,7 @@ class Order extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar cartNum={this.state.orderNum}/>
+        <Navbar cartNum={this.state.orders.length}/>
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Customize Order</h3>
         <div className="card m-3">
           <div className="row no-gutters">
@@ -121,6 +122,13 @@ class Order extends Component {
     const serverResponse = await orderServer.get("/orders");
     const currentOrders = [...serverResponse.data];
     this.setState({ orderNum: currentOrders.length })
+  }
+
+  componentDidMount = async () => {
+    const ordersResponse = await orderServer.get("http://localhost:5000/orders");
+    const currentOrders = [...ordersResponse.data];
+    console.log(currentOrders);
+    this.setState({orders: currentOrders})
   }
 
 };

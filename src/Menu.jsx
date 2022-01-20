@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import orderServer from "./api/orders";
+
 import Navbar from "./Navbar";
 import MenuItem from "./MenuItem";
 
@@ -9,14 +11,15 @@ class Menu extends Component {
     super(props)
     this.state = {
       items: [],
-      itemCount: ""
+      itemCount: "",
+      orders: []
     };
   };
 
   render() {
     return (
       <React.Fragment>
-        <Navbar />
+        <Navbar cartNum={this.state.orders.length}/>
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Menu</h3>
         <div className="m-3">
           <div className="row row-cols-1 row-cols-lg-3">
@@ -58,13 +61,17 @@ class Menu extends Component {
   };
 
   componentDidMount = async () => {
-    const response = await fetch("http://localhost:5000/items", { method: "GET" })
-    const formattedResponse = await response.json();
-    const itemsLength = Object.keys(formattedResponse).length;
+    const itemResponse = await fetch("http://localhost:5000/items", { method: "GET" })
+    const itemFormattedResponse = await itemResponse.json();
+    const itemsLength = Object.keys(itemFormattedResponse).length;
     this.setState({
-      items: formattedResponse,
+      items: itemFormattedResponse,
       itemCount: itemsLength
     });
+
+    const ordersResponse = await orderServer.get("http://localhost:5000/orders");
+    const currentOrders = [...ordersResponse.data];
+    this.setState({orders: currentOrders});
   };
 };
 
