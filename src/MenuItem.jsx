@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 class MenuItem extends Component {
   state = {
-    item: this.props.item
+    item: this.props.item,
+    
   }
   render() {
     return (
@@ -14,10 +15,10 @@ class MenuItem extends Component {
             <div className="card-body">
               <h5 className="card-title d-inline align-middle">{this.state.item.pizza}</h5>
               <img src="images/trash-solid.svg" width="40" height="20" className="pointer d-inline align-middle" onClick={() => this.props.deleteItem(this.state.item)} alt="" />
-              <select name="pizza-size" id="size-select">
-                <option value={this.state.item.small}>{`Small: $${this.state.item.small}`}</option>
-                <option value={this.state.item.medium}>{`Medium: $${this.state.item.medium}`}</option>
-                <option value={this.state.item.large}>{`Large: $${this.state.item.large}`}</option>
+              <select name="pizza-size" id={`${this.state.item.pizza}-size-select`}>
+                <option data-size="small" id={`size-${this.state.item.pizza}`} value={this.state.item.small}>{`Small: $${this.state.item.small}`}</option>
+                <option data-size="medium" id={`size-${this.state.item.pizza}`} value={this.state.item.medium}>{`Medium: $${this.state.item.medium}`}</option>
+                <option data-size="large" id={`size-${this.state.item.pizza}`} value={this.state.item.large}>{`Large: $${this.state.item.large}`}</option>
               </select>
               <h6 className="card-subtitle m-2 text-muted">${this.state.item.price}</h6>
               <div className="btn-group mt-1 mb-3" role="group" aria-label="button group">
@@ -26,14 +27,31 @@ class MenuItem extends Component {
                 <button type="button" className="btn btn-success" onClick={() => { this.props.increaseQty(this.state.item, 5) }}>+</button>
               </div>
               <br></br>
-              <Link to="/order" id={this.state.item.pizza} className="btn btn-warning m-1" onClick={(e) => {console.log(e.target.id)}}>Customize</Link>
-              <button className="btn btn-primary m-1">Add to Cart</button>
+              <Link to="/order" id={this.state.item.pizza} className="btn btn-warning m-1" onClick={(e) => { console.log(e.target.id) }}>Customize</Link>
+              <Link to="/cart" id={this.state.item.pizza} className="btn btn-primary m-1" onClick={(e) => { this.addToCart(e) }}>Add to Cart</Link>
             </div>
           </div>
         </div>
       </React.Fragment>
     );
   };
+
+  addToCart = (e) => {
+    if (!this.state.item.quantity) {
+      e.preventDefault();
+      alert("Please select quantity first");
+    }
+    else {
+      console.log(e.target.id)
+      // console.log(document.querySelector(`#size-${e.target.id}`).value);
+      const sizeIndex = document.querySelector(`#${e.target.id}-size-select`).selectedIndex
+      console.log(document.querySelector(`#${e.target.id}-size-select`)[sizeIndex].attributes[0].value)
+    }
+  }
+
+
 };
+
+
 
 export default MenuItem;
