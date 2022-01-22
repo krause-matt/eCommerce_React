@@ -53,24 +53,10 @@
   ],
   "orders": [
     {
-      "size": "Small",
-      "price": "10",
+      "pizza": "Sausage",
+      "size": "Large",
+      "quantity": 5,
       "id": 1
-    },
-    {
-      "size": "Medium",
-      "price": "13",
-      "id": 2
-    },
-    {
-      "size": "Large",
-      "price": "15",
-      "id": 3
-    },
-    {
-      "size": "Large",
-      "price": "15",
-      "id": 4
     }
   ]
 }

@@ -10,7 +10,7 @@ class CartItem extends Component {
         <div className="card ml-3 mb-3">
           <div className="row no-gutters">
             <div className="col-sm-6">
-              <div className="card-header"><h6>Item</h6></div>
+              <div className="card-header"><h6>{`Item: ${this.state.orders.pizza} Pizza`}</h6></div>
               <div className="card-body">
                 <img className="img-fluid" src={this.props.image} alt="..." />
               </div>
@@ -19,8 +19,8 @@ class CartItem extends Component {
               <div className="card-header"><h6>Details</h6></div>
               <div className="card-body">
                 <ul className="list-group">
-                  <li className="list-group-item">Quantity:</li>
-                  <li className="list-group-item">Size:</li>
+                  <li className="list-group-item">{`Quantity: ${this.state.orders.quantity}`}</li>
+                  <li className="list-group-item">{`Size: ${this.state.orders.size}`}</li>
                   <li className="list-group-item">Customizations:</li>
                 </ul>
                 <h5 className="card-title mt-3">Total</h5>
