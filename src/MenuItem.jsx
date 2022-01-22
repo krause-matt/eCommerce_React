@@ -47,6 +47,7 @@ class MenuItem extends Component {
       console.log(e.target.id) //Pizza
       const sizeIndex = document.querySelector(`#${e.target.id}-size-select`).selectedIndex 
       const pizzaSize = document.querySelector(`#${e.target.id}-size-select`)[sizeIndex].attributes[0].value //Size
+      const pizzaPrice = document.querySelector(`#${e.target.id}-size-select`)[sizeIndex].value
       console.log(pizzaSize);
       console.log(this.state.item.quantity); //Quantity
 
@@ -54,6 +55,7 @@ class MenuItem extends Component {
       cartAdd.pizza = e.target.id;
       cartAdd.size = pizzaSize;
       cartAdd.quantity = this.state.item.quantity;
+      cartAdd.price = pizzaPrice;
 
       const toCartResponse = await orderServer.post("/orders", cartAdd);
 

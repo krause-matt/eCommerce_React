@@ -7,6 +7,7 @@ import CartItem from "./CartItem";
 class Cart extends Component {
   state = {
     orders: [],
+    orderTotal: 0,
     image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80"
   }
 
@@ -22,6 +23,7 @@ class Cart extends Component {
                   <CartItem ordersProp={item} image={this.state.image}/>
                 )
               })}
+              <h3 className="ml-3">{`Grand Total: $${this.state.orderTotal}`}</h3>
             </div>
             <div className="col-md-6">
             Payment details
@@ -35,6 +37,14 @@ class Cart extends Component {
     const serverResponse = await orderServer.get("/orders");
     const currentOrders = [...serverResponse.data];
     this.setState({ orders: currentOrders })
+
+    let grandTotal = 0;
+
+    for (const object of currentOrders) {
+      grandTotal += (object.price * object.quantity);
+    }
+
+    this.setState({orderTotal: grandTotal})
   }
 };
 
