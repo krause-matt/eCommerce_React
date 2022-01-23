@@ -127,7 +127,6 @@ class Order extends Component {
   componentDidMount = async () => {
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
     const currentOrders = [...ordersResponse.data];
-    console.log(currentOrders);
     this.setState({orders: currentOrders})
   }
 

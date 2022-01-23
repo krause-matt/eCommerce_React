@@ -53,14 +53,6 @@
   ],
   "orders": [
     {
-      "pizza": "Veggie",
-      "size": "Medium",
-      "quantity": 2,
-      "price": "14",
-      "customizations": "Sausage",
-      "id": 1
-    },
-    {
       "pizza": "Sausage",
       "size": "Small",
       "quantity": 1,
@@ -69,10 +61,10 @@
     },
     {
       "pizza": "Deluxe",
-      "size": "Large",
-      "quantity": 5,
-      "price": "17",
-      "id": 3
+      "size": "Small",
+      "quantity": 1,
+      "price": "12",
+      "id": 5
     }
   ]
 }

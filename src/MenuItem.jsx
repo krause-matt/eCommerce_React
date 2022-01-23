@@ -16,7 +16,9 @@ class MenuItem extends Component {
             <img src={this.state.item.image} className="card-img-top mx-auto" alt="pizza" style={{ height: "20rem", width: "20rem", objectFit: "cover" }} />
             <div className="card-body">
               <h5 className="card-title d-inline align-middle">{this.state.item.pizza}</h5>
+              {/*
               <img src="images/trash-solid.svg" width="40" height="20" className="pointer d-inline align-middle" onClick={() => this.props.deleteItem(this.state.item)} alt="" />
+              */}
               <select name="pizza-size" id={`${this.state.item.pizza}-size-select`}>
                 <option data-size="Small" id={`size-${this.state.item.pizza}`} value={this.state.item.small}>{`Small: $${this.state.item.small}`}</option>
                 <option data-size="Medium" id={`size-${this.state.item.pizza}`} value={this.state.item.medium}>{`Medium: $${this.state.item.medium}`}</option>
@@ -44,12 +46,9 @@ class MenuItem extends Component {
       alert("Please select quantity first");
     }
     else {
-      console.log(e.target.id) //Pizza
       const sizeIndex = document.querySelector(`#${e.target.id}-size-select`).selectedIndex 
       const pizzaSize = document.querySelector(`#${e.target.id}-size-select`)[sizeIndex].attributes[0].value //Size
-      const pizzaPrice = document.querySelector(`#${e.target.id}-size-select`)[sizeIndex].value
-      console.log(pizzaSize);
-      console.log(this.state.item.quantity); //Quantity
+      const pizzaPrice = document.querySelector(`#${e.target.id}-size-select`)[sizeIndex].value //Price
 
       const cartAdd = {};
       cartAdd.pizza = e.target.id;
@@ -64,7 +63,5 @@ class MenuItem extends Component {
 
 
 };
-
-
 
 export default MenuItem;
