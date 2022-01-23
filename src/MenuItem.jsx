@@ -5,7 +5,8 @@ import orderServer from "./api/orders";
 class MenuItem extends Component {
   state = {
     item: this.props.item,
-    cartOrder: {}
+    cartOrder: {},
+    dropDownSize: "Small"
     
   }
   render() {
@@ -19,7 +20,7 @@ class MenuItem extends Component {
               {/*
               <img src="images/trash-solid.svg" width="40" height="20" className="pointer d-inline align-middle" onClick={() => this.props.deleteItem(this.state.item)} alt="" />
               */}
-              <select name="pizza-size" id={`${this.state.item.pizza}-size-select`}>
+              <select name="pizza-size" id={`${this.state.item.pizza}-size-select`}  onChange={(e) => this.dropDownHandler(e)}>
                 <option data-size="Small" id={`size-${this.state.item.pizza}`} value={this.state.item.small}>{`Small: $${this.state.item.small}`}</option>
                 <option data-size="Medium" id={`size-${this.state.item.pizza}`} value={this.state.item.medium}>{`Medium: $${this.state.item.medium}`}</option>
                 <option data-size="Large" id={`size-${this.state.item.pizza}`} value={this.state.item.large}>{`Large: $${this.state.item.large}`}</option>
@@ -31,8 +32,8 @@ class MenuItem extends Component {
                 <button type="button" className="btn btn-success" onClick={() => { this.props.increaseQty(this.state.item, 5) }}>+</button>
               </div>
               <br></br>
-              <Link to="/order" id={this.state.item.pizza} className="btn btn-warning m-1" onClick={(e) => { console.log(e.target.id) }}>Customize</Link>
-              <Link to="/cart" id={this.state.item.pizza} className="btn btn-primary m-1" onClick={(e) => { this.addToCart(e) }}>Add to Cart</Link>
+              <Link to={{pathname: "/order", search: `?quantity=${this.state.item.quantity}?size=${this.state.dropDownSize}`, hash: `#${this.state.item.id}`}} id={this.state.item.id} className="btn btn-warning m-1" onClick={(e) => this.customizeClick(e)}>Customize</Link>
+              <Link to="/cart" id={this.state.item.pizza} className="btn btn-primary m-1" onClick={(e) => { this.addToCartClick(e) }}>Add to Cart</Link>
             </div>
           </div>
         </div>
@@ -40,7 +41,7 @@ class MenuItem extends Component {
     );
   };
 
-  addToCart = async (e) => {
+  addToCartClick = async (e) => {
     if (!this.state.item.quantity) {
       e.preventDefault();
       alert("Please select quantity first");
@@ -55,12 +56,25 @@ class MenuItem extends Component {
       cartAdd.size = pizzaSize;
       cartAdd.quantity = this.state.item.quantity;
       cartAdd.price = pizzaPrice;
+      cartAdd.toppings = null;
 
       const toCartResponse = await orderServer.post("/orders", cartAdd);
 
     }
   }
 
+  customizeClick = (e) => {
+    if (!this.state.item.quantity) {
+      e.preventDefault();
+      alert("Please select quantity first");
+    }
+  }
+
+  dropDownHandler = (event) => {
+    const selectNumber = event.target.selectedIndex;
+    const pizzaSize = event.target[selectNumber].attributes[0].value
+    this.setState({dropDownSize: pizzaSize})
+  }
 
 };
 

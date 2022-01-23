@@ -10,46 +10,68 @@ import orders from "./api/orders";
 class Order extends Component {
 
   state = {
-    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
-    sizes: [{ size: "Small", price: 10 }, { size: "Medium", price: 13 }, { size: "Large", price: 15 }],
-    toppings: [{ id: 1, topping: "Extra Cheese" }, { id: 2, topping: "Green Pepper" }, { id: 3, topping: "Olive" }],
+    toppings: [
+      { id: 1, topping: "Extra Cheese" },
+      { id: 2, topping: "Green Pepper" },
+      { id: 3, topping: "Olive" },
+      { id: 4, topping: "Onion" },
+      { id: 5, topping: "Pepperoni" },
+      { id: 6, topping: "Sausage" },
+      { id: 7, topping: "Tomato" }
+    ],
     sizeSelect: "",
     priceSelect: "",
-    toppingSelect: [{ topping: "Extra Cheese", added: false }, { topping: "Green Pepper", added: false }, { topping: "Olive", added: false }],
+    toppingSelect: [
+      { topping: "Extra Cheese", added: false },
+      { topping: "Green Pepper", added: false },
+      { topping: "Olive", added: false },
+      { topping: "Onion", added: false },
+      { topping: "Pepperoni", added: false },
+      { topping: "Sausage", added: false },
+      { topping: "Tomato", added: false }
+    ],
     sizeWarning: "",
     orders: [],
-    orderNum: ""
+    orderNum: "",
+    pizzaId: "",
+    currentItem: {},
+    incomingQuantity: 0,
+    incomingSize: ""
   }
 
   render() {
     return (
       <React.Fragment>
-        <Navbar cartNum={this.state.orders.length}/>
+        <Navbar cartNum={this.state.orders.length} />
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Customize Order</h3>
         <div className="card m-3">
           <div className="row no-gutters">
             <div className="col-md-3">
-              <div className="card-header"><h4>Pizza</h4></div>
+              <div className="card-header"><h4>{this.state.currentItem.pizza} Pizza</h4></div>
               <div className="card-body">
-                <img className="img-fluid" src={this.state.image} alt="..." />
+                <img className="img-fluid" src={this.state.currentItem.image} alt="..." />
               </div>
             </div>
             <div className="col-md-3 border-left">
               <div className="card-header"><h4>Select Size</h4></div>
               <div className="card-body">
-                {this.state.sizes.map((item) => {
-                  return (
-                    <div key={item.size}>
-                      <input type="radio" id={item.size} name="size" value={item.price} onClick={(event) => { this.sizeSelect(event.target) }} />
-                      <label className="ml-3" for={item.size}>{`${item.size}: $${item.price}`}</label>
-                    </div>
-                  )
-                })}
+                <div>
+                  <input type="radio" id="Small" name="size" value={this.state.currentItem.small} onChange={(event) => { this.sizeSelect(event.target) }} checked={(this.state.incomingSize === "Small") ? true : false} />
+                  <label className="ml-3" for="Small">Small: ${this.state.currentItem.small}</label>
+                </div>
+                <div>
+                  <input type="radio" id="Medium" name="size" value={this.state.currentItem.medium} onChange={(event) => { this.sizeSelect(event.target) }} checked={(this.state.incomingSize === "Medium") ? true : false} />
+                  <label className="ml-3" for="Medium">Medium: ${this.state.currentItem.medium}</label>
+                </div>
+                <div>
+                  <input type="radio" id="Large" name="size" value={this.state.currentItem.large} onChange={(event) => { this.sizeSelect(event.target) }} checked={(this.state.incomingSize === "Large") ? true : false} />
+                  <label className="ml-3" for="Large">Large: ${this.state.currentItem.large}</label>
+                </div>
                 <div className="text-danger">{this.state.sizeWarning}</div>
               </div>
             </div>
             <div className="col-md-6 border-left">
-              <div className="card-header"><h4>Additional Toppings</h4></div>
+              <div className="card-header"><h4>Extra Toppings</h4></div>
               <div className="card-body">
                 {this.state.toppings.map((item) => {
                   return (
@@ -64,7 +86,7 @@ class Order extends Component {
             </div>
           </div>
         </div>
-        <button className="btn btn-warning m-3" onClick={(event) => {this.orderProcess(event)}}>TEST</button>
+        <button className="btn btn-warning m-3" onClick={(event) => { this.orderProcess(event) }}>TEST</button>
         <Link to="/cart" className="btn btn-success m-3">Add to Cart</Link>
       </React.Fragment>
     );
@@ -111,10 +133,14 @@ class Order extends Component {
     }
 
     const currentOrder = {};
+    currentOrder.pizza = this.state.currentItem.pizza;
     currentOrder.size = this.state.sizeSelect;
+    currentOrder.quantity = 1 //NEED TO FIX!
     currentOrder.price = this.state.priceSelect;
+    //TOPPINGS PLACEHOLDER currentOrder.toppings
+
     const orderAdd = [currentOrder];
-    this.setState({orders: orderAdd})
+    this.setState({ orders: orderAdd })
 
     //const deleteTest = await orderServer.delete("/orders/1");
     const result = await orderServer.post("/orders", currentOrder);
@@ -127,9 +153,31 @@ class Order extends Component {
   componentDidMount = async () => {
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
     const currentOrders = [...ordersResponse.data];
-    this.setState({orders: currentOrders})
+    this.setState({ orders: currentOrders })
+
+    const incomingQuantity = document.location.search.split("?")[1].split("=")[1]; // Quantity
+    this.setState({incomingQuantity: incomingQuantity});
+    const incomingSize = document.location.search.split("?")[2].split("=")[1]; // Size
+    this.setState({incomingSize: incomingSize});
+    this.setState({sizeSelect: incomingSize})
+    const pizzaId = document.location.href.split("#")[1];
+    this.setState({ pizzaId: pizzaId });
+    const pizzaIdResponse = await orderServer.get(`items/${pizzaId}`);
+    this.setState({ currentItem: pizzaIdResponse.data });
   }
 
 };
 
 export default Order;
+
+{ /* Initial rendering of size/price radio buttons
+{this.state.sizes.map((item) => {
+  return (
+    <div key={item.size}>
+      <input type="radio" id={item.size} name="size" value={item.price} onClick={(event) => { this.sizeSelect(event.target) }} />
+      <label className="ml-3" for={item.size}>{`${item.size}: $${item.price}`}</label>
+    </div>
+  )
+})}
+
+*/}
