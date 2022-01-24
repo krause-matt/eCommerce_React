@@ -68,6 +68,15 @@ class Order extends Component {
                   <label className="ml-3" for="Large">Large: ${this.state.currentItem.large}</label>
                 </div>
                 <div className="text-danger">{this.state.sizeWarning}</div>
+                <hr></hr>
+                <div className="mb-3">Quantity</div>
+                <select name="pizza-quantity" value={this.state.incomingQuantity} onChange={(e) => this.quantityChange(e)}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
               </div>
             </div>
             <div className="col-md-6 border-left">
@@ -95,7 +104,8 @@ class Order extends Component {
   sizeSelect = (target) => {
     this.setState({
       sizeSelect: target.id,
-      priceSelect: target.value
+      priceSelect: target.value,
+      incomingSize: target.id
     })
   }
 
@@ -132,10 +142,11 @@ class Order extends Component {
       }
     }
 
+
     const currentOrder = {};
     currentOrder.pizza = this.state.currentItem.pizza;
     currentOrder.size = this.state.sizeSelect;
-    currentOrder.quantity = 1 //NEED TO FIX!
+    currentOrder.quantity = this.state.incomingQuantity;
     currentOrder.price = this.state.priceSelect;
     //TOPPINGS PLACEHOLDER currentOrder.toppings
 
@@ -150,16 +161,24 @@ class Order extends Component {
     this.setState({ orderNum: currentOrders.length })
   }
 
+  quantityChange = (e) => {
+    this.setState({incomingQuantity: e.target.value})
+  }
+
+
   componentDidMount = async () => {
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
     const currentOrders = [...ordersResponse.data];
     this.setState({ orders: currentOrders })
 
     const incomingQuantity = document.location.search.split("?")[1].split("=")[1]; // Quantity
-    this.setState({incomingQuantity: incomingQuantity});
+    this.setState({ incomingQuantity: incomingQuantity });
     const incomingSize = document.location.search.split("?")[2].split("=")[1]; // Size
-    this.setState({incomingSize: incomingSize});
-    this.setState({sizeSelect: incomingSize})
+    this.setState({ incomingSize: incomingSize });
+    this.setState({ sizeSelect: incomingSize })
+    const incomingPrice = document.location.search.split("?")[3].split("=")[1]; // Price
+    this.setState({ priceSelect: incomingPrice })
+
     const pizzaId = document.location.href.split("#")[1];
     this.setState({ pizzaId: pizzaId });
     const pizzaIdResponse = await orderServer.get(`items/${pizzaId}`);
