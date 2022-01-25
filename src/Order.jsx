@@ -110,6 +110,7 @@ class Order extends Component {
   }
 
   toppingSelect = (target) => {
+    console.log(this.state.toppingSelect);
     const allToppings = [...this.state.toppingSelect];
     allToppings[target.value - 1].added = target.checked;
     this.setState({ toppingSelect: allToppings })
@@ -149,6 +150,7 @@ class Order extends Component {
     currentOrder.quantity = this.state.incomingQuantity;
     currentOrder.price = this.state.priceSelect;
     //TOPPINGS PLACEHOLDER currentOrder.toppings
+    currentOrder.toppings = this.state.toppingSelect;
 
     const orderAdd = [currentOrder];
     this.setState({ orders: orderAdd })

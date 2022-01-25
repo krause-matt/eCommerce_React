@@ -51,5 +51,43 @@
       "quantity": 0
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "pizza": "Sausage",
+      "size": "Medium",
+      "quantity": "1",
+      "price": "14",
+      "toppings": [
+        {
+          "topping": "Extra Cheese",
+          "added": true
+        },
+        {
+          "topping": "Green Pepper",
+          "added": false
+        },
+        {
+          "topping": "Olive",
+          "added": false
+        },
+        {
+          "topping": "Onion",
+          "added": false
+        },
+        {
+          "topping": "Pepperoni",
+          "added": false
+        },
+        {
+          "topping": "Sausage",
+          "added": false
+        },
+        {
+          "topping": "Tomato",
+          "added": false
+        }
+      ],
+      "id": 1
+    }
+  ]
 }
