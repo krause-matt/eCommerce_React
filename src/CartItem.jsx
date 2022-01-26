@@ -25,7 +25,18 @@ class CartItem extends Component {
                   <li className="list-group-item"><span>Size:</span><span>{this.state.orders.size}</span></li>
                   <li className="list-group-item"><span>Price:</span><span>{this.state.orders.price}</span></li>
                   <li className="list-group-item"><span>Quantity:</span><span>{this.state.orders.quantity}</span></li>
-                  <li className="list-group-item">{this.state.orders.toppings !== undefined ? `Customizations: ${this.state.orders.toppings}` : "Customizations: None"}</li>
+                  <li className="list-group-item">
+                    {
+                      this.state.orders.toppings.map((toppingObject) => {
+                        if (toppingObject.added) {
+                          return (
+                            <div>{toppingObject.topping} - {toppingObject.amount}</div>
+                          )
+                        }
+                      })
+                    }
+                  </li>
+
                 </ul>
                 <h5 className="card-title mt-3">{`Item Cost: $${this.state.itemCost}`}</h5>
               </div>
@@ -39,8 +50,6 @@ class CartItem extends Component {
   componentDidMount = () => {
     const totalCalc = this.state.orders.quantity * this.state.orders.price;
     this.setState({ itemCost: totalCalc })
-
-    console.log(this.state.orders.toppings)
   }
 };
 

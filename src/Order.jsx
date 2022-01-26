@@ -22,13 +22,13 @@ class Order extends Component {
     sizeSelect: "",
     priceSelect: "",
     toppingSelect: [
-      { topping: "Extra Cheese", added: false },
-      { topping: "Green Pepper", added: false },
-      { topping: "Olive", added: false },
-      { topping: "Onion", added: false },
-      { topping: "Pepperoni", added: false },
-      { topping: "Sausage", added: false },
-      { topping: "Tomato", added: false }
+      { topping: "Extra Cheese", added: false, amount: "Normal" },
+      { topping: "Green Pepper", added: false, amount: "Normal" },
+      { topping: "Olive", added: false, amount: "Normal" },
+      { topping: "Onion", added: false, amount: "Normal" },
+      { topping: "Pepperoni", added: false, amount: "Normal" },
+      { topping: "Sausage", added: false, amount: "Normal" },
+      { topping: "Tomato", added: false, amount: "Normal" }
     ],
     sizeWarning: "",
     orders: [],
@@ -110,20 +110,27 @@ class Order extends Component {
   }
 
   toppingSelect = (target) => {
-    console.log(this.state.toppingSelect);
     const allToppings = [...this.state.toppingSelect];
     allToppings[target.value - 1].added = target.checked;
     this.setState({ toppingSelect: allToppings })
+    //console.log(this.state.toppingSelect);
   }
 
   toppingAmount = (itemId) => {
     return (
-      <select id={`toppingAmount-${itemId}`} className="ml-3" name="toppingAmount">
-        <option value="normal">Normal</option>
-        <option value="easy">Easy</option>
-        <option value="extra">Extra</option>
+      <select id={`toppingAmount-${itemId}`} className="ml-3" name="toppingAmount" onChange={(e) => this.toppingAmountSelected(e, itemId)}>
+        <option value="Normal">Normal</option>
+        <option value="Easy">Easy</option>
+        <option value="Extra">Extra</option>
       </select>
     )
+  }
+
+  toppingAmountSelected = (e, itemId) => {
+    const allToppings = [...this.state.toppingSelect];    
+    allToppings[itemId - 1].amount = e.target.value;
+    console.log(allToppings);
+
   }
 
   orderProcess = async (e) => {
@@ -133,16 +140,12 @@ class Order extends Component {
     } else {
       this.setState({ sizeWarning: "" })
     }
-    const toppingExtraCheese = document.querySelector("#toppingAmount-1")
-    const toppingGreenPepper = document.querySelector("#toppingAmount-2")
-    const toppingOlive = document.querySelector("#toppingAmount-3")
 
     for (const item of this.state.toppingSelect) {
       if (item.added) {
         console.log("Topping", item.topping)
       }
     }
-
 
     const currentOrder = {};
     currentOrder.pizza = this.state.currentItem.pizza;
