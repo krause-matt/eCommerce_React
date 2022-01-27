@@ -26,14 +26,14 @@ class CartItem extends Component {
                   <li className="list-group-item"><span>Price:</span><span>{this.state.orders.price}</span></li>
                   <li className="list-group-item"><span>Quantity:</span><span>{this.state.orders.quantity}</span></li>
                   <li className="list-group-item">
-                    {
-                      this.state.orders.toppings.map((toppingObject) => {
+                    { (this.state.orders.toppings !== null) ?
+                      (this.state.orders.toppings.map((toppingObject) => {
                         if (toppingObject.added) {
                           return (
-                            <div>{toppingObject.topping} - {toppingObject.amount}</div>
+                            <div key={toppingObject.toppings}>{toppingObject.topping} - {toppingObject.amount}</div>
                           )
                         }
-                      })
+                      })) : "No custom toppings"
                     }
                   </li>
 
