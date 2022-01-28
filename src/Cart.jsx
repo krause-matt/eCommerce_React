@@ -9,6 +9,7 @@ class Cart extends Component {
   state = {
     orders: [],
     orderTotal: 0,
+    orderQty: "",
     image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80"
   }
 
@@ -26,13 +27,18 @@ class Cart extends Component {
       grandTotal += (object.price * object.quantity);
     }
 
-    this.setState({ orderTotal: grandTotal })
+    let qtyCounter = 0;
+    for (let pizza of currentOrders) {
+      qtyCounter += pizza.quantity;
+    }
+
+    this.setState({ orderTotal: grandTotal, orderQty: qtyCounter })
   }
 
   render() {
     return (
       <React.Fragment>
-        <Navbar cartNum={this.state.orders.length} />
+        <Navbar cartNum={this.state.orderQty} />
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Cart</h3>
         <div className="row">
           <div className="col-md-6">
@@ -57,12 +63,16 @@ class Cart extends Component {
     this.setState({ orders: currentOrders })
 
     let grandTotal = 0;
-
     for (const object of currentOrders) {
       grandTotal += (object.price * object.quantity);
     }
 
-    this.setState({ orderTotal: grandTotal })
+    let qtyCounter = 0;
+    for (let pizza of currentOrders) {
+      qtyCounter += pizza.quantity;
+    }
+
+    this.setState({ orderTotal: grandTotal, orderQty: qtyCounter  })
   }
 
 

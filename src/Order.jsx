@@ -33,6 +33,7 @@ class Order extends Component {
     sizeWarning: "",
     orders: [],
     orderNum: "",
+    orderQty: "",
     pizzaId: "",
     currentItem: {},
     incomingQuantity: 0,
@@ -42,7 +43,7 @@ class Order extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar cartNum={this.state.orders.length} />
+        <Navbar cartNum={this.state.orderQty} />
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Customize Order</h3>
         <div className="card m-3">
           <div className="row no-gutters">
@@ -175,6 +176,13 @@ class Order extends Component {
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
     const currentOrders = [...ordersResponse.data];
     this.setState({ orders: currentOrders })
+
+    let qtyCounter = 0;
+    for (let pizza of currentOrders) {
+      qtyCounter += pizza.quantity;
+    };
+
+    this.setState({ orderQty: qtyCounter });
 
     const incomingQuantity = document.location.search.split("?")[1].split("=")[1]; // Quantity
     this.setState({ incomingQuantity: incomingQuantity });

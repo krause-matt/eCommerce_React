@@ -19,7 +19,7 @@ class Menu extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar cartNum={this.state.orders.length}/>
+        <Navbar cartNum={this.state.itemCount}/>
         <h3 className="m-3 pb-2 font-weight-bold border-bottom">Menu</h3>
         <div className="m-3">
           <div className="row row-cols-1 row-cols-lg-3">
@@ -65,13 +65,18 @@ class Menu extends Component {
     const itemFormattedResponse = await itemResponse.json();
     const itemsLength = Object.keys(itemFormattedResponse).length;
     this.setState({
-      items: itemFormattedResponse,
-      itemCount: itemsLength
+      items: itemFormattedResponse
     });
 
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
     const currentOrders = [...ordersResponse.data];
     this.setState({orders: currentOrders});
+
+    let qtyCounter = 0;
+    for (let pizza of currentOrders) {
+      qtyCounter += pizza.quantity
+    }
+    this.setState({itemCount: qtyCounter});
   };
 };
 
