@@ -30,10 +30,12 @@ class Order extends Component {
       { topping: "Sausage", added: false, amount: "Normal" },
       { topping: "Tomato", added: false, amount: "Normal" }
     ],
+    pizzaWarning: "",
     sizeWarning: "",
+    qtyWarning: "",
     orders: [],
     orderNum: "",
-    orderQty: "",
+    orderQty: 0,
     pizzaId: "",
     currentItem: {},
     incomingQuantity: 0,
@@ -45,6 +47,13 @@ class Order extends Component {
       "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80",
       "https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1621070766841-a7bf1ee96df0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80"
+    ],
+    pizzaPrice: [
+      { small: 10, medium: 13, large: 15 },
+      { small: 11, medium: 14, large: 16 },
+      { small: 11, medium: 14, large: 16 },
+      { small: 11, medium: 14, large: 16 },
+      { small: 12, medium: 15, large: 17 },
     ]
   }
 
@@ -62,13 +71,14 @@ class Order extends Component {
                   <div className="card-body">
                     <img className="img-fluid" src={this.state.currentItem.image} alt="" />
                     <select name="pizza-type" value={this.state.currentItem.pizza} onChange={(e) => this.pizzaChoice(e)}>
-                  <option value="">Select Pizza...</option>
-                  <option value="Cheese">Cheese</option>
-                  <option value="Sausage">Sausage</option>
-                  <option value="Pepperoni">Pepperoni</option>
-                  <option value="Veggie">Veggie</option>
-                  <option value="Deluxe">Deluxe</option>
-                </select>
+                      <option value="">Select Pizza...</option>
+                      <option value="Cheese">Cheese</option>
+                      <option value="Sausage">Sausage</option>
+                      <option value="Pepperoni">Pepperoni</option>
+                      <option value="Veggie">Veggie</option>
+                      <option value="Deluxe">Deluxe</option>
+                    </select>
+                    <div className="text-danger">{this.state.pizzaWarning}</div>
                   </div>
                 </React.Fragment>
               ) : (
@@ -79,6 +89,7 @@ class Order extends Component {
                   </div>
                 </React.Fragment>
               )}
+
             </div>
             <div className="col-md-3 border-left">
               <div className="card-header"><h4>Select Size</h4></div>
@@ -99,12 +110,14 @@ class Order extends Component {
                 <hr></hr>
                 <div className="mb-3">Quantity</div>
                 <select name="pizza-quantity" value={this.state.incomingQuantity} onChange={(e) => this.quantityChange(e)}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
+                  <option value="">Select Quantity</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
                 </select>
+                <div className="text-danger">{this.state.qtyWarning}</div>
               </div>
             </div>
             <div className="col-md-6 border-left">
@@ -133,7 +146,8 @@ class Order extends Component {
     this.setState({
       sizeSelect: target.id,
       priceSelect: target.value,
-      incomingSize: target.id
+      incomingSize: target.id,
+      sizeWarning: ""
     })
   }
 
@@ -141,7 +155,6 @@ class Order extends Component {
     const allToppings = [...this.state.toppingSelect];
     allToppings[target.value - 1].added = target.checked;
     this.setState({ toppingSelect: allToppings })
-    //console.log(this.state.toppingSelect);
   }
 
   toppingAmount = (itemId) => {
@@ -157,22 +170,29 @@ class Order extends Component {
   toppingAmountSelected = (e, itemId) => {
     const allToppings = [...this.state.toppingSelect];
     allToppings[itemId - 1].amount = e.target.value;
-    console.log(allToppings);
-
   }
 
   orderProcess = async (e) => {
     if (!this.state.sizeSelect) {
       this.setState({ sizeWarning: "Please select a size" })
-      return
     } else {
       this.setState({ sizeWarning: "" })
     }
 
-    for (const item of this.state.toppingSelect) {
-      if (item.added) {
-        console.log("Topping", item.topping)
-      }
+    if (!this.state.currentItem.pizza) {
+      this.setState({ pizzaWarning: "Please select a pizza" })
+    } else {
+      this.setState({ pizzaWarning: "" })
+    }
+
+    if (!this.state.incomingQuantity) {
+      this.setState({ qtyWarning: "Please select quantity" })
+    } else {
+      this.setState({ qtyWarning: "" })
+    }
+
+    if (!this.state.sizeSelect || !this.state.currentItem.pizza || !this.state.incomingQuantity) {
+      return;
     }
 
     const currentOrder = {};
@@ -193,15 +213,26 @@ class Order extends Component {
   }
 
   quantityChange = (e) => {
-    this.setState({ incomingQuantity: e.target.value })
+    this.setState({ incomingQuantity: e.target.selectedIndex, qtyWarning: "" });
   }
 
-  pizzaChoice = (e) => {    
-    const pizzaBuild = {};
-    pizzaBuild.pizza = e.target.value
+  pizzaChoice = (e) => {
     const num = e.target.selectedIndex;
-    pizzaBuild.image = this.state.pizzaImage[num-1];
-    this.setState({currentItem: pizzaBuild})
+
+    if (num === 0) {
+      const pizzaBuild = {...this.state.currentItem};
+      pizzaBuild.pizza = "";
+      pizzaBuild.image = "";
+      this.setState({ currentItem: pizzaBuild})
+      return
+    }
+    const pizzaBuild = {};
+    pizzaBuild.pizza = e.target.value    
+    pizzaBuild.image = this.state.pizzaImage[num - 1];
+    pizzaBuild.small = this.state.pizzaPrice[num - 1].small;
+    pizzaBuild.medium = this.state.pizzaPrice[num - 1].medium;
+    pizzaBuild.large = this.state.pizzaPrice[num - 1].large;
+    this.setState({ currentItem: pizzaBuild, pizzaWarning: "" });
   }
 
 
@@ -209,9 +240,8 @@ class Order extends Component {
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
     const currentOrders = [...ordersResponse.data];
     this.setState({ orders: currentOrders });
-    console.log("current orders", currentOrders.length);
 
-    if (currentOrders.length > 0) {
+    if (document.location.search) {
       let qtyCounter = 0;
       for (let pizza of currentOrders) {
         qtyCounter += pizza.quantity;
@@ -234,8 +264,6 @@ class Order extends Component {
     } else {
       this.setState({ noMenuSelection: true });
     }
-
-
   }
 
 };

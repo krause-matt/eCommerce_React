@@ -60,6 +60,7 @@ class MenuItem extends Component {
       cartAdd.price = pizzaPrice;
       cartAdd.toppings = null;
 
+
       const toCartResponse = await orderServer.post("/orders", cartAdd);
 
     }
