@@ -22,7 +22,7 @@ class MenuItem extends Component {
                 {/*
                 <img src="images/trash-solid.svg" width="40" height="20" className="pointer d-inline align-middle" onClick={() => this.props.deleteItem(this.state.item)} alt="" />
                 */}
-                <select className="mb-3" name="pizza-size" id={`${this.state.item.pizza}-size-select`} value={this.state.dropDownPrice} onChange={(e) => this.dropDownHandler(e)}>
+                <select className="mb-3 text-center" name="pizza-size" id={`${this.state.item.pizza}-size-select`} value={this.state.dropDownPrice} onChange={(e) => this.dropDownHandler(e)}>
                   <option data-size="Small" id={`size-${this.state.item.pizza}`} value={this.state.item.small}>{`Small: $${this.state.item.small}`}</option>
                   <option data-size="Medium" id={`size-${this.state.item.pizza}`} value={this.state.item.medium}>{`Medium: $${this.state.item.medium}`}</option>
                   <option data-size="Large" id={`size-${this.state.item.pizza}`} value={this.state.item.large}>{`Large: $${this.state.item.large}`}</option>

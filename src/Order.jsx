@@ -37,7 +37,15 @@ class Order extends Component {
     pizzaId: "",
     currentItem: {},
     incomingQuantity: 0,
-    incomingSize: ""
+    incomingSize: "",
+    noMenuSelection: false,
+    pizzaImage: [
+      "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620374645310-f9d97e733268?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+      "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80",
+      "https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1621070766841-a7bf1ee96df0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80"
+    ]
   }
 
   render() {
@@ -48,10 +56,29 @@ class Order extends Component {
         <div className="card m-3">
           <div className="row no-gutters">
             <div className="col-md-3">
-              <div className="card-header"><h4>{this.state.currentItem.pizza} Pizza</h4></div>
-              <div className="card-body">
-                <img className="img-fluid" src={this.state.currentItem.image} alt="..." />
-              </div>
+              {this.state.noMenuSelection ? (
+                <React.Fragment>
+                  <div className="card-header">{(this.state.currentItem.pizza) ? <h4>{this.state.currentItem.pizza} Pizza</h4> : <h4>Select Pizza!</h4>}</div>
+                  <div className="card-body">
+                    <img className="img-fluid" src={this.state.currentItem.image} alt="" />
+                    <select name="pizza-type" value={this.state.currentItem.pizza} onChange={(e) => this.pizzaChoice(e)}>
+                  <option value="">Select Pizza...</option>
+                  <option value="Cheese">Cheese</option>
+                  <option value="Sausage">Sausage</option>
+                  <option value="Pepperoni">Pepperoni</option>
+                  <option value="Veggie">Veggie</option>
+                  <option value="Deluxe">Deluxe</option>
+                </select>
+                  </div>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <div className="card-header"><h4>{this.state.currentItem.pizza} Pizza</h4></div>
+                  <div className="card-body">
+                    <img className="img-fluid" src={this.state.currentItem.image} alt="..." />
+                  </div>
+                </React.Fragment>
+              )}
             </div>
             <div className="col-md-3 border-left">
               <div className="card-header"><h4>Select Size</h4></div>
@@ -128,7 +155,7 @@ class Order extends Component {
   }
 
   toppingAmountSelected = (e, itemId) => {
-    const allToppings = [...this.state.toppingSelect];    
+    const allToppings = [...this.state.toppingSelect];
     allToppings[itemId - 1].amount = e.target.value;
     console.log(allToppings);
 
@@ -153,13 +180,11 @@ class Order extends Component {
     currentOrder.size = this.state.sizeSelect;
     currentOrder.quantity = this.state.incomingQuantity;
     currentOrder.price = this.state.priceSelect;
-    //TOPPINGS PLACEHOLDER currentOrder.toppings
     currentOrder.toppings = this.state.toppingSelect;
 
     const orderAdd = [currentOrder];
     this.setState({ orders: orderAdd })
 
-    //const deleteTest = await orderServer.delete("/orders/1");
     const result = await orderServer.post("/orders", currentOrder);
 
     const serverResponse = await orderServer.get("/orders");
@@ -168,34 +193,49 @@ class Order extends Component {
   }
 
   quantityChange = (e) => {
-    this.setState({incomingQuantity: e.target.value})
+    this.setState({ incomingQuantity: e.target.value })
+  }
+
+  pizzaChoice = (e) => {    
+    const pizzaBuild = {};
+    pizzaBuild.pizza = e.target.value
+    const num = e.target.selectedIndex;
+    pizzaBuild.image = this.state.pizzaImage[num-1];
+    this.setState({currentItem: pizzaBuild})
   }
 
 
   componentDidMount = async () => {
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
     const currentOrders = [...ordersResponse.data];
-    this.setState({ orders: currentOrders })
+    this.setState({ orders: currentOrders });
+    console.log("current orders", currentOrders.length);
 
-    let qtyCounter = 0;
-    for (let pizza of currentOrders) {
-      qtyCounter += pizza.quantity;
-    };
+    if (currentOrders.length > 0) {
+      let qtyCounter = 0;
+      for (let pizza of currentOrders) {
+        qtyCounter += pizza.quantity;
+      };
 
-    this.setState({ orderQty: qtyCounter });
+      this.setState({ orderQty: qtyCounter });
 
-    const incomingQuantity = document.location.search.split("?")[1].split("=")[1]; // Quantity
-    this.setState({ incomingQuantity: incomingQuantity });
-    const incomingSize = document.location.search.split("?")[2].split("=")[1]; // Size
-    this.setState({ incomingSize: incomingSize });
-    this.setState({ sizeSelect: incomingSize })
-    const incomingPrice = document.location.search.split("?")[3].split("=")[1]; // Price
-    this.setState({ priceSelect: incomingPrice })
+      const incomingQuantity = document.location.search.split("?")[1].split("=")[1]; // Quantity
+      this.setState({ incomingQuantity: incomingQuantity });
+      const incomingSize = document.location.search.split("?")[2].split("=")[1]; // Size
+      this.setState({ incomingSize: incomingSize });
+      this.setState({ sizeSelect: incomingSize })
+      const incomingPrice = document.location.search.split("?")[3].split("=")[1]; // Price
+      this.setState({ priceSelect: incomingPrice })
 
-    const pizzaId = document.location.href.split("#")[1];
-    this.setState({ pizzaId: pizzaId });
-    const pizzaIdResponse = await orderServer.get(`items/${pizzaId}`);
-    this.setState({ currentItem: pizzaIdResponse.data });
+      const pizzaId = document.location.href.split("#")[1];
+      this.setState({ pizzaId: pizzaId });
+      const pizzaIdResponse = await orderServer.get(`items/${pizzaId}`);
+      this.setState({ currentItem: pizzaIdResponse.data });
+    } else {
+      this.setState({ noMenuSelection: true });
+    }
+
+
   }
 
 };
