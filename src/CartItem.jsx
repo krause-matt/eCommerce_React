@@ -3,7 +3,8 @@ import React, { Component } from "react";
 class CartItem extends Component {
   state = {
     orders: this.props.ordersProp,
-    itemCost: ""
+    itemCost: "",
+    customTopping: false
   }
 
   render() {
@@ -26,14 +27,16 @@ class CartItem extends Component {
                   <li className="list-group-item"><span>Price:</span><span>{this.state.orders.price}</span></li>
                   <li className="list-group-item"><span>Quantity:</span><span>{this.state.orders.quantity}</span></li>
                   <li className="list-group-item">
-                    {(this.state.orders.toppings !== null) ?
-                      (this.state.orders.toppings.map((toppingObject) => {
+                    {(this.state.customTopping) ?
+                      (
+                        this.state.orders.toppings.map((toppingObject) => {
                         if (toppingObject.added) {
                           return (
                             <div key={toppingObject.toppings}>{toppingObject.topping} - {toppingObject.amount}</div>
                           )
                         }
-                      })) : "No custom toppings"
+                      })
+                      ) : "No custom toppings"
                     }
                   </li>
 
@@ -50,6 +53,19 @@ class CartItem extends Component {
   componentDidMount = () => {
     const totalCalc = this.state.orders.quantity * this.state.orders.price;
     this.setState({ itemCost: totalCalc })
+
+    if (this.state.orders.toppings) {
+      let toppingCount = 0;
+      for (let topping of this.state.orders.toppings) {
+        if (topping.added) {
+          toppingCount += 1;
+        }
+      }
+      if (toppingCount > 0) {
+        this.setState({customTopping: true});
+      }
+      
+    }
   }
 };
 

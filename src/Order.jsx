@@ -198,7 +198,8 @@ class Order extends Component {
     const currentOrder = {};
     currentOrder.pizza = this.state.currentItem.pizza;
     currentOrder.size = this.state.sizeSelect;
-    currentOrder.quantity = this.state.incomingQuantity;
+    //currentOrder.quantity = this.state.incomingQuantity;
+    currentOrder.quantity = parseInt(this.state.incomingQuantity, 10);
     currentOrder.price = this.state.priceSelect;
     currentOrder.toppings = this.state.toppingSelect;
 
