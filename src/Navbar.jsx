@@ -10,10 +10,10 @@ class Navbar extends Component {
       <React.Fragment>
         <nav className="navbar navbar-expand-md navbar-dark bg-primary">
           <div className="d-flex justify-content-center align-items-center">
-            <Link className="navbar-brand" to="/">
+            <Link className="navbar-brand" to="/" onClick={this.setCookie}>
               <img src="images/pizza.svg" width="60" height="60" className="d-inline-block align-top" alt="" />
             </Link>
-            <Link to="/" ><h1 className="d-inline-block page-title"><b>Pizza Place</b></h1></Link>
+            <Link to="/" onClick={this.setCookie}><h1 className="d-inline-block page-title"><b>Pizza Place</b></h1></Link>
           </div>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -37,6 +37,10 @@ class Navbar extends Component {
         </nav>
       </React.Fragment>
     )
+  }
+
+  setCookie = () => {
+    document.cookie = `prevUrl=${window.location.href}; SameSite=None; Secure`
   }
 }
 

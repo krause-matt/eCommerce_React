@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
+import orderServer from "./api/orders";
 
 class Login extends Component {
 
@@ -59,6 +60,31 @@ class Login extends Component {
       this.setState({passwordCheckMessage: ""})
     }
   }
+
+  componentDidMount = async () => {
+    const orderResponse = await orderServer.get("/orders");
+    const orderArray = orderResponse.data;
+
+    console.log(orderArray.length);
+    
+    const cookieExist = document.cookie.split("; ").find(row => row.startsWith("prev"));
+    
+    // if (cookieExist) {
+    //   const prevUrl = document.cookie.split("; ").find(row => row.startsWith("prev")).split("=")[1].split("/")[3];
+    // }    
+    
+    if (cookieExist) {
+      console.log("from inside");
+    } else {
+      console.log("from outside");
+      if (orderArray) {
+        orderArray.forEach(async (order, index) => {
+          let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)
+        })
+      }
+    }
+  }
+
 };
 
 export default Login;
