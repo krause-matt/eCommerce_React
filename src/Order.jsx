@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import orderServer from "./api/orders";
 
+
 import Navbar from "./Navbar";
 import Cart from "./Cart";
 import orders from "./api/orders";
@@ -221,14 +222,14 @@ class Order extends Component {
     const num = e.target.selectedIndex;
 
     if (num === 0) {
-      const pizzaBuild = {...this.state.currentItem};
+      const pizzaBuild = { ...this.state.currentItem };
       pizzaBuild.pizza = "";
       pizzaBuild.image = "";
-      this.setState({ currentItem: pizzaBuild})
+      this.setState({ currentItem: pizzaBuild })
       return
     }
     const pizzaBuild = {};
-    pizzaBuild.pizza = e.target.value    
+    pizzaBuild.pizza = e.target.value
     pizzaBuild.image = this.state.pizzaImage[num - 1];
     pizzaBuild.small = this.state.pizzaPrice[num - 1].small;
     pizzaBuild.medium = this.state.pizzaPrice[num - 1].medium;
@@ -242,13 +243,14 @@ class Order extends Component {
     const currentOrders = [...ordersResponse.data];
     this.setState({ orders: currentOrders });
 
-    if (document.location.search) {
-      let qtyCounter = 0;
-      for (let pizza of currentOrders) {
-        qtyCounter += pizza.quantity;
-      };
+    let qtyCounter = 0;
+    for (let pizza of currentOrders) {
+      qtyCounter += pizza.quantity;
+    };
 
-      this.setState({ orderQty: qtyCounter });
+    this.setState({ orderQty: qtyCounter });
+
+    if (document.location.search) {
 
       const incomingQuantity = document.location.search.split("?")[1].split("=")[1]; // Quantity
       this.setState({ incomingQuantity: incomingQuantity });

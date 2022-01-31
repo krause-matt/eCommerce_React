@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import orderServer from "./api/orders";
+import StripeCheckout from "react-stripe-checkout";
 
 import Navbar from "./Navbar";
 import CartItem from "./CartItem";
@@ -47,10 +48,10 @@ class Cart extends Component {
                 <CartItem key={item.id} ordersProp={item} image={this.state.image} trashClick={this.trashClick} />
               )
             })}
-            <h3 className="ml-3">{`Grand Total: $${this.state.orderTotal}`}</h3>
+
           </div>
           <div className="col-md-6">
-            Payment details
+            <h3 className="ml-3">{`Grand Total: $${this.state.orderTotal}`}</h3>
           </div>
         </div>
       </React.Fragment>
@@ -74,8 +75,6 @@ class Cart extends Component {
 
     this.setState({ orderTotal: grandTotal, orderQty: qtyCounter })
   }
-
-
 
 };
 

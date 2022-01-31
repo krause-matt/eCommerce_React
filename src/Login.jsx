@@ -67,11 +67,7 @@ class Login extends Component {
 
     console.log(orderArray.length);
     
-    const cookieExist = document.cookie.split("; ").find(row => row.startsWith("prev"));
-    
-    // if (cookieExist) {
-    //   const prevUrl = document.cookie.split("; ").find(row => row.startsWith("prev")).split("=")[1].split("/")[3];
-    // }    
+    const cookieExist = document.cookie.split("; ").find(row => row.startsWith("prev"));  
     
     if (cookieExist) {
       console.log("from inside");
