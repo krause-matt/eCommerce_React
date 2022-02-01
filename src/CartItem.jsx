@@ -32,7 +32,7 @@ class CartItem extends Component {
                         this.state.orders.toppings.map((toppingObject) => {
                         if (toppingObject.added) {
                           return (
-                            <div key={toppingObject.toppings}>{toppingObject.topping} - {toppingObject.amount}</div>
+                            <div key={toppingObject.topping}>{toppingObject.topping} - {toppingObject.amount}</div>
                           )
                         }
                       })

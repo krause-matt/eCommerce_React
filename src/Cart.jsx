@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import orderServer from "./api/orders";
 import StripeCheckout from "react-stripe-checkout";
+import { loadStripe } from "@stripe/stripe-js";
 
 import Navbar from "./Navbar";
 import CartItem from "./CartItem";
+
+// const stripe = require("stripe")(REACT_APP_STRIPE_SKEY);
+const stripePromise = loadStripe(REACT_APP_STRIPE_PKEY);
 
 class Cart extends Component {
 
@@ -74,6 +78,7 @@ class Cart extends Component {
     }
 
     this.setState({ orderTotal: grandTotal, orderQty: qtyCounter })
+
   }
 
 };
