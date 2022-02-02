@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import orderServer from "./api/orders";
-import StripeCheckout from "react-stripe-checkout";
+//import StripeCheckout from "react-stripe-checkout";
+//import Stripe from "stripe";
 import { loadStripe } from "@stripe/stripe-js";
 
 import Navbar from "./Navbar";
 import CartItem from "./CartItem";
 
-// const stripe = require("stripe")(REACT_APP_STRIPE_SKEY);
-const stripePromise = loadStripe(REACT_APP_STRIPE_PKEY);
+//const stripe = new Stripe(process.env.REACT_APP_STRIPE_SKEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PKEY);
+
+//const product = await stripe.products.create({name: "Pizza"});
 
 class Cart extends Component {
 
@@ -56,11 +59,26 @@ class Cart extends Component {
           </div>
           <div className="col-md-6">
             <h3 className="ml-3">{`Grand Total: $${this.state.orderTotal}`}</h3>
+            <button className="btn btn-success m-3" onClick={this.stripePay}>Pay with Card</button>
           </div>
         </div>
       </React.Fragment>
     );
   };
+
+  stripePay = async () => {
+    const stripe = await stripePromise;
+    const { error } = await stripe.redirectToCheckout({
+      lineItems: [{
+        price: "price_1KOYhzJo80QPNKDeTBMTxSKT",
+        quantity: 1
+      }],
+      mode: "payment",
+      successUrl: "http://localhost:3000/menu",
+      cancelUrl: "http://localhost:3000",
+    })
+    console.log("error", error);
+  }
 
   componentDidMount = async () => {
     const serverResponse = await orderServer.get("/orders");
