@@ -18,7 +18,17 @@ class Cart extends Component {
     orders: [],
     orderTotal: 0,
     orderQty: 0,
-    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80"
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+    stripeId:
+    {
+      Cheese:
+      {
+        Small: "price_1KOu0RJo80QPNKDeDrrfCraa",
+        Medium: "price_1KOu0oJo80QPNKDer6NlVOXT",
+        Large: "price_1KOu1CJo80QPNKDe08wg5feg"
+      }
+    }
+
   }
 
 
@@ -67,17 +77,37 @@ class Cart extends Component {
   };
 
   stripePay = async () => {
+    let lineItems = []
+    this.state.orders.map(order => {
+      const pizzaString = order.pizza;
+      const sizeString = order.size
+      lineItems.push({
+        price: this.state.stripeId[pizzaString][sizeString],
+        quantity: order.quantity
+      })
+    })
+    console.log("lineItems", lineItems)
+
     const stripe = await stripePromise;
     const { error } = await stripe.redirectToCheckout({
-      lineItems: [{
-        price: "price_1KOYhzJo80QPNKDeTBMTxSKT",
-        quantity: 1
-      }],
+      lineItems: lineItems,
       mode: "payment",
       successUrl: "http://localhost:3000/menu",
       cancelUrl: "http://localhost:3000",
     })
     console.log("error", error);
+
+    // const stripe = await stripePromise;
+    // const { error } = await stripe.redirectToCheckout({
+    //   lineItems: [{
+    //     price: this.state.stripeId.cheese.large,
+    //     quantity: this.state.orders[0].quantity
+    //   }],
+    //   mode: "payment",
+    //   successUrl: "http://localhost:3000/menu",
+    //   cancelUrl: "http://localhost:3000",
+    // })
+    // console.log("error", error);
   }
 
   componentDidMount = async () => {
@@ -96,6 +126,8 @@ class Cart extends Component {
     }
 
     this.setState({ orderTotal: grandTotal, orderQty: qtyCounter })
+
+    console.log("orders", this.state.orders)
 
   }
 

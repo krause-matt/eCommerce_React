@@ -4,7 +4,8 @@ class CartItem extends Component {
   state = {
     orders: this.props.ordersProp,
     itemCost: "",
-    customTopping: false
+    customTopping: false,
+    
   }
 
   render() {
@@ -30,12 +31,12 @@ class CartItem extends Component {
                     {(this.state.customTopping) ?
                       (
                         this.state.orders.toppings.map((toppingObject) => {
-                        if (toppingObject.added) {
-                          return (
-                            <div key={toppingObject.topping}>{toppingObject.topping} - {toppingObject.amount}</div>
-                          )
-                        }
-                      })
+                          if (toppingObject.added) {
+                            return (
+                              <div key={toppingObject.topping}>{toppingObject.topping} - {toppingObject.amount}</div>
+                            )
+                          }
+                        })
                       ) : "No custom toppings"
                     }
                   </li>
@@ -62,9 +63,9 @@ class CartItem extends Component {
         }
       }
       if (toppingCount > 0) {
-        this.setState({customTopping: true});
+        this.setState({ customTopping: true });
       }
-      
+
     }
   }
 };
