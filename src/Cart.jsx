@@ -26,6 +26,30 @@ class Cart extends Component {
         Small: "price_1KOu0RJo80QPNKDeDrrfCraa",
         Medium: "price_1KOu0oJo80QPNKDer6NlVOXT",
         Large: "price_1KOu1CJo80QPNKDe08wg5feg"
+      },
+      Sausage:
+      {
+        Small: "price_1KPGYxJo80QPNKDebPmgqYXn",
+        Medium: "price_1KPGZXJo80QPNKDevmwRbwEu",
+        Large: "price_1KPGZvJo80QPNKDeA9vE3bkx"
+      },
+      Pepperoni:
+      {
+        Small: "price_1KPGaPJo80QPNKDe3kFdl3y8",
+        Medium: "price_1KPGadJo80QPNKDeN58uog6R",
+        Large: "price_1KPGb6Jo80QPNKDehdomB0qz"
+      },
+      Veggie:
+      {
+        Small: "price_1KPGbOJo80QPNKDedPBtxQlS",
+        Medium: "price_1KPGbdJo80QPNKDekmyuLamG",
+        Large: "price_1KPGbsJo80QPNKDethW31fQ0"
+      },
+      Deluxe:
+      {
+        Small: "price_1KPGcAJo80QPNKDeARwz1pZK",
+        Medium: "price_1KPGcTJo80QPNKDeXQ4ks2lB",
+        Large: "price_1KPGcqJo80QPNKDe4BZ226Pe"
       }
     }
 
@@ -78,7 +102,7 @@ class Cart extends Component {
 
   stripePay = async () => {
     let lineItems = []
-    this.state.orders.map(order => {
+    this.state.orders.forEach(order => {
       const pizzaString = order.pizza;
       const sizeString = order.size
       lineItems.push({
@@ -92,8 +116,8 @@ class Cart extends Component {
     const { error } = await stripe.redirectToCheckout({
       lineItems: lineItems,
       mode: "payment",
-      successUrl: "http://localhost:3000/menu",
-      cancelUrl: "http://localhost:3000",
+      successUrl: "http://localhost:3000/success",
+      cancelUrl: "http://localhost:3000/error",
     })
     console.log("error", error);
 
