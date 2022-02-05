@@ -173,6 +173,7 @@ class Order extends Component {
   }
 
   orderProcess = async (e) => {
+
     if (!this.state.sizeSelect) {
       this.setState({ sizeWarning: "Please select a size" })
       e.preventDefault();
@@ -197,15 +198,14 @@ class Order extends Component {
     if (!this.state.sizeSelect || !this.state.currentItem.pizza || !this.state.incomingQuantity) {
       e.preventDefault();
       return;
-      
     }
 
     const currentOrder = {};
     currentOrder.pizza = this.state.currentItem.pizza;
     currentOrder.size = this.state.sizeSelect;
-    //currentOrder.quantity = this.state.incomingQuantity;
     currentOrder.quantity = parseInt(this.state.incomingQuantity, 10);
-    currentOrder.price = this.state.priceSelect;
+    //currentOrder.price = this.state.priceSelect;
+    currentOrder.price = document.querySelector("input[name=size]:checked").value
     currentOrder.toppings = this.state.toppingSelect;
 
     const orderAdd = [currentOrder];
@@ -239,8 +239,8 @@ class Order extends Component {
     pizzaBuild.medium = this.state.pizzaPrice[num - 1].medium;
     pizzaBuild.large = this.state.pizzaPrice[num - 1].large;
     this.setState({ currentItem: pizzaBuild, pizzaWarning: "" });
-  }
 
+  }
 
   componentDidMount = async () => {
     const ordersResponse = await orderServer.get("http://localhost:5000/orders");
@@ -276,15 +276,3 @@ class Order extends Component {
 };
 
 export default Order;
-
-{ /* Initial rendering of size/price radio buttons
-{this.state.sizes.map((item) => {
-  return (
-    <div key={item.size}>
-      <input type="radio" id={item.size} name="size" value={item.price} onClick={(event) => { this.sizeSelect(event.target) }} />
-      <label className="ml-3" for={item.size}>{`${item.size}: $${item.price}`}</label>
-    </div>
-  )
-})}
-
-*/}
