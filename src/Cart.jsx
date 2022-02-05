@@ -151,8 +151,6 @@ class Cart extends Component {
 
     this.setState({ orderTotal: grandTotal, orderQty: qtyCounter })
 
-    console.log("orders", this.state.orders)
-
   }
 
 };
