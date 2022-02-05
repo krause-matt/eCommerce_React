@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./index.css";
+import orderServer from "./api/orders";
+import orders from "./api/orders";
 
 class Success extends Component {
   render() {
@@ -17,6 +19,17 @@ class Success extends Component {
       </div>
     )
 
+  }
+
+  componentDidMount = async () => {
+    const orderResponse = await orderServer.get("/orders");
+    const orderArray = orderResponse.data;
+
+    if (orderArray) {
+      orderArray.forEach(async (order, index) => {
+        let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)
+      });
+    }
   }
 }
 

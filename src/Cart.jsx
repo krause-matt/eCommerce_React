@@ -110,7 +110,6 @@ class Cart extends Component {
         quantity: order.quantity
       })
     })
-    console.log("lineItems", lineItems)
 
     const stripe = await stripePromise;
     const { error } = await stripe.redirectToCheckout({
@@ -119,19 +118,6 @@ class Cart extends Component {
       successUrl: "http://localhost:3000/success",
       cancelUrl: "http://localhost:3000/error",
     })
-    console.log("error", error);
-
-    // const stripe = await stripePromise;
-    // const { error } = await stripe.redirectToCheckout({
-    //   lineItems: [{
-    //     price: this.state.stripeId.cheese.large,
-    //     quantity: this.state.orders[0].quantity
-    //   }],
-    //   mode: "payment",
-    //   successUrl: "http://localhost:3000/menu",
-    //   cancelUrl: "http://localhost:3000",
-    // })
-    // console.log("error", error);
   }
 
   componentDidMount = async () => {

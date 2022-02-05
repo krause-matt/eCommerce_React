@@ -70,14 +70,10 @@ class Login extends Component {
     const orderResponse = await orderServer.get("/orders");
     const orderArray = orderResponse.data;
 
-    console.log(orderArray.length);
-
     const cookieExist = document.cookie.split("; ").find(row => row.startsWith("prev"));
 
     if (cookieExist) {
-      console.log("from inside");
     } else {
-      console.log("from outside");
       if (orderArray) {
         orderArray.forEach(async (order, index) => {
           let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)

@@ -137,8 +137,7 @@ class Order extends Component {
             </div>
           </div>
         </div>
-        <button className="btn btn-warning m-3" onClick={(event) => { this.orderProcess(event) }}>TEST</button>
-        <Link to="/cart" className="btn btn-success m-3">Add to Cart</Link>
+        <a href="http://localhost:3000/cart" className="btn btn-success m-3" onClick={(event) => { this.orderProcess(event) }}>Add to Cart</a>
       </React.Fragment>
     );
   };
@@ -176,24 +175,29 @@ class Order extends Component {
   orderProcess = async (e) => {
     if (!this.state.sizeSelect) {
       this.setState({ sizeWarning: "Please select a size" })
+      e.preventDefault();
     } else {
       this.setState({ sizeWarning: "" })
     }
 
     if (!this.state.currentItem.pizza) {
       this.setState({ pizzaWarning: "Please select a pizza" })
+      e.preventDefault();
     } else {
       this.setState({ pizzaWarning: "" })
     }
 
     if (!this.state.incomingQuantity) {
       this.setState({ qtyWarning: "Please select quantity" })
+      e.preventDefault();
     } else {
       this.setState({ qtyWarning: "" })
     }
 
     if (!this.state.sizeSelect || !this.state.currentItem.pizza || !this.state.incomingQuantity) {
+      e.preventDefault();
       return;
+      
     }
 
     const currentOrder = {};
