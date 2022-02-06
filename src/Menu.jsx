@@ -61,14 +61,14 @@ class Menu extends Component {
   };
 
   componentDidMount = async () => {
-    const itemResponse = await fetch("http://localhost:5000/items", { method: "GET" })
+    const itemResponse = await fetch("/items", { method: "GET" })
     const itemFormattedResponse = await itemResponse.json();
     const itemsLength = Object.keys(itemFormattedResponse).length;
     this.setState({
       items: itemFormattedResponse
     });
 
-    const ordersResponse = await orderServer.get("http://localhost:5000/orders");
+    const ordersResponse = await orderServer.get("/orders");
     const currentOrders = [...ordersResponse.data];
     this.setState({ orders: currentOrders });
 
