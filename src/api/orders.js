@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const port = process.env.PORT;
+
 export default axios.create({
-  baseURL: "/"
+  baseURL: `http://ecommerce-pizza-place.herokuapp.com:${port}`
 });
