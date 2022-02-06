@@ -3,6 +3,7 @@ import orderServer from "./api/orders";
 
 import Navbar from "./Navbar";
 import MenuItem from "./MenuItem";
+import orders from "./api/orders";
 
 
 class Menu extends Component {
@@ -61,9 +62,8 @@ class Menu extends Component {
   };
 
   componentDidMount = async () => {
-    const itemResponse = await fetch("/items", { method: "GET" })
-    const itemFormattedResponse = await itemResponse.json();
-    const itemsLength = Object.keys(itemFormattedResponse).length;
+    const itemResponse = await orderServer.get("/items")
+    const itemFormattedResponse = [...itemResponse.data];
     this.setState({
       items: itemFormattedResponse
     });
