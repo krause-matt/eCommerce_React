@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import orderServer from "./api/orders";
-//import StripeCheckout from "react-stripe-checkout";
-//import Stripe from "stripe";
 import { loadStripe } from "@stripe/stripe-js";
 
 import Navbar from "./Navbar";

@@ -60,7 +60,6 @@ class MenuItem extends Component {
       cartAdd.price = pizzaPrice;
       cartAdd.toppings = null;
 
-
       const toCartResponse = await orderServer.post("/orders", cartAdd);
 
     }
@@ -80,7 +79,6 @@ class MenuItem extends Component {
 
 
     this.setState({ dropDownSize: pizzaSize })
-    //EDIT HERE!!!!!!
     this.setState({ dropDownPrice: pizzaPrice })
   }
 

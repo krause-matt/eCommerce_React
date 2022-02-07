@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import "./index.css";
 import orderServer from "./api/orders";
 
-
 import Navbar from "./Navbar";
-import Cart from "./Cart";
-import orders from "./api/orders";
 
 class Order extends Component {
 
@@ -239,11 +235,10 @@ class Order extends Component {
     pizzaBuild.medium = this.state.pizzaPrice[num - 1].medium;
     pizzaBuild.large = this.state.pizzaPrice[num - 1].large;
     this.setState({ currentItem: pizzaBuild, pizzaWarning: "" });
-
   }
 
   componentDidMount = async () => {
-    const ordersResponse = await orderServer.get("http://localhost:5000/orders");
+    const ordersResponse = await orderServer.get("/orders");
     const currentOrders = [...ordersResponse.data];
     this.setState({ orders: currentOrders });
 
