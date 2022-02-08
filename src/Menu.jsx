@@ -62,7 +62,7 @@ class Menu extends Component {
   };
 
   componentDidMount = async () => {
-    const itemResponse = await orderServer.get("/items")
+    const itemResponse = await orderServer.get("/items.json")
     const itemFormattedResponse = [...itemResponse.data];
     this.setState({
       items: itemFormattedResponse
