@@ -64,12 +64,14 @@ class Menu extends Component {
   componentDidMount = async () => {
     const itemResponse = await orderServer.get("/items.json")
     const itemFormattedResponse = [...itemResponse.data];
+    console.log("firebase-items", itemFormattedResponse);
     this.setState({
       items: itemFormattedResponse
     });
 
-    const ordersResponse = await orderServer.get("/orders");
+    const ordersResponse = await orderServer.get("/orders.json");
     const currentOrders = [...ordersResponse.data];
+    console.log("firebase-orders", currentOrders);
     this.setState({ orders: currentOrders });
 
     let qtyCounter = 0;

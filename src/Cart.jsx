@@ -121,8 +121,12 @@ class Cart extends Component {
   }
 
   componentDidMount = async () => {
-    const serverResponse = await orderServer.get("/orders");
+    const serverResponse = await orderServer.get("/orders.json");
+    console.log("firebase-cart-response", serverResponse.data);
+    console.log(Object.entries(serverResponse.data)[0][1].pizza)
+
     const currentOrders = [...serverResponse.data];
+    
     this.setState({ orders: currentOrders })
 
     let grandTotal = 0;
