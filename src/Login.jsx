@@ -76,7 +76,8 @@ class Login extends Component {
     } else {
       if (orderArray) {
         orderArray.forEach(async (order, index) => {
-          let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)
+          //let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)
+          await orderServer.delete(`/orders/${index + 1}`)
         })
       }
     }

@@ -211,7 +211,7 @@ class Order extends Component {
     const orderAdd = [currentOrder];
     this.setState({ orders: orderAdd })
 
-    const result = await orderServer.post("/orders", currentOrder);
+    const result = await orderServer.post("/orders.json", currentOrder);
 
     const serverResponse = await orderServer.get("/orders");
     const currentOrders = [...serverResponse.data];

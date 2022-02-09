@@ -51,5 +51,58 @@
       "quantity": 0
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "pizza": "Cheese",
+      "size": "Large",
+      "quantity": 3,
+      "price": "15",
+      "toppings": [
+        {
+          "topping": "Extra Cheese",
+          "added": true,
+          "amount": "Normal"
+        },
+        {
+          "topping": "Green Pepper",
+          "added": false,
+          "amount": "Normal"
+        },
+        {
+          "topping": "Olive",
+          "added": false,
+          "amount": "Normal"
+        },
+        {
+          "topping": "Onion",
+          "added": false,
+          "amount": "Normal"
+        },
+        {
+          "topping": "Pepperoni",
+          "added": false,
+          "amount": "Normal"
+        },
+        {
+          "topping": "Sausage",
+          "added": false,
+          "amount": "Normal"
+        },
+        {
+          "topping": "Tomato",
+          "added": false,
+          "amount": "Normal"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "pizza": "Deluxe",
+      "size": "Large",
+      "quantity": 1,
+      "price": "17",
+      "toppings": null,
+      "id": 2
+    }
+  ]
 }

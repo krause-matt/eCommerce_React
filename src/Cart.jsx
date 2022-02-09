@@ -58,7 +58,7 @@ class Cart extends Component {
 
   trashClick = async (orderId) => {
 
-    const removeOrder = await orderServer.delete(`/orders/${orderId}`);
+    //const removeOrder = await orderServer.delete(`/orders/${orderId}`);
     const refreshOrder = await orderServer.get("/orders");
     this.setState({ orders: refreshOrder.data })
 
@@ -118,6 +118,7 @@ class Cart extends Component {
       successUrl: "http://localhost:3000/success",
       cancelUrl: "http://localhost:3000/error",
     })
+    console.log(error);
   }
 
   componentDidMount = async () => {

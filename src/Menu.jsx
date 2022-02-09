@@ -3,8 +3,6 @@ import orderServer from "./api/orders";
 
 import Navbar from "./Navbar";
 import MenuItem from "./MenuItem";
-import orders from "./api/orders";
-
 
 class Menu extends Component {
 
@@ -70,8 +68,14 @@ class Menu extends Component {
     });
 
     const ordersResponse = await orderServer.get("/orders.json");
-    const currentOrders = [...ordersResponse.data];
-    console.log("firebase-orders", currentOrders);
+    console.log("firebase-orders", Object.entries(ordersResponse.data)[0][1][0]);
+    //const currentOrders = [...ordersResponse.data];
+    const currentOrders = [
+      Object.entries(ordersResponse.data)[0][1][0],
+      Object.entries(ordersResponse.data)[1][1][0],
+      Object.entries(ordersResponse.data)[2][1][0]
+    ]
+    
     this.setState({ orders: currentOrders });
 
     let qtyCounter = 0;

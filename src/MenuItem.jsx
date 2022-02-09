@@ -59,9 +59,11 @@ class MenuItem extends Component {
       cartAdd.quantity = this.state.item.quantity;
       cartAdd.price = pizzaPrice;
       cartAdd.toppings = null;
+      const cartAddArray = [cartAdd];
 
+      console.log("cartAddArray", cartAddArray)
 
-      const toCartResponse = await orderServer.post("/orders.json", cartAdd);
+      const toCartResponse = await orderServer.post("/orders.json", cartAddArray);
       console.log("firebase-response", toCartResponse);
 
     }
