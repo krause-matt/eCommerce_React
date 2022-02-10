@@ -65,7 +65,6 @@ class MenuItem extends Component {
 
       const toCartResponse = await orderServer.post("/orders.json", cartAddArray);
       console.log("firebase-response", toCartResponse);
-
     }
   }
 

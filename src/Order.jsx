@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import "./index.css";
 import orderServer from "./api/orders";
-
-
 import Navbar from "./Navbar";
-import Cart from "./Cart";
-import orders from "./api/orders";
 
 class Order extends Component {
 
@@ -204,17 +199,24 @@ class Order extends Component {
     currentOrder.pizza = this.state.currentItem.pizza;
     currentOrder.size = this.state.sizeSelect;
     currentOrder.quantity = parseInt(this.state.incomingQuantity, 10);
-    //currentOrder.price = this.state.priceSelect;
     currentOrder.price = document.querySelector("input[name=size]:checked").value
     currentOrder.toppings = this.state.toppingSelect;
 
     const orderAdd = [currentOrder];
     this.setState({ orders: orderAdd })
 
-    const result = await orderServer.post("/orders.json", currentOrder);
+    //const result = await orderServer.post("/orders.json", currentOrder);
+    await orderServer.post("/orders.json", currentOrder);
 
-    const serverResponse = await orderServer.get("/orders");
-    const currentOrders = [...serverResponse.data];
+    const serverResponse = await orderServer.get("/orders.json");
+    const ordersResponseArray = Object.entries(serverResponse.data);
+    const currentOrders = [];
+    for (let item of ordersResponseArray) {
+      currentOrders.push(item[1][0])
+    };
+
+    //const currentOrders = [...serverResponse.data];
+
     this.setState({ orderNum: currentOrders.length })
   }
 
@@ -243,8 +245,15 @@ class Order extends Component {
   }
 
   componentDidMount = async () => {
-    const ordersResponse = await orderServer.get("/orders");
-    const currentOrders = [...ordersResponse.data];
+    const ordersResponse = await orderServer.get("/orders.json");
+    const ordersResponseArray = Object.entries(ordersResponse.data);
+    const currentOrders = [];
+    for (let item of ordersResponseArray) {
+      currentOrders.push(item[1][0])
+    };
+
+    // const currentOrders = [...ordersResponse.data];
+
     this.setState({ orders: currentOrders });
 
     let qtyCounter = 0;
@@ -266,7 +275,7 @@ class Order extends Component {
 
       const pizzaId = document.location.href.split("#")[1];
       this.setState({ pizzaId: pizzaId });
-      const pizzaIdResponse = await orderServer.get(`items/${pizzaId}`);
+      const pizzaIdResponse = await orderServer.get(`items/${pizzaId - 1}.json`);
       this.setState({ currentItem: pizzaIdResponse.data });
     } else {
       this.setState({ noMenuSelection: true });
