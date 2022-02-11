@@ -21,7 +21,7 @@ class CartItem extends Component {
               </div>
             </div>
             <div className="col-sm-6">
-              <div className="card-header text-right fixed-height"><img src="images/trash-solid.svg" width="40" height="20" className="pointer" alt="" onClick={() => this.props.trashClick(this.state.orders.id)} /></div>
+              <div className="card-header text-right fixed-height"><img src="images/trash-solid.svg" width="40" height="20" className="pointer" alt="" onClick={() => this.props.trashClick(this.state.orders)} /></div>
               <div className="card-body">
                 <div className="text-center"><h5>Details</h5></div>
                 <ul className="list-group">
