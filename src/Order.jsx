@@ -246,12 +246,15 @@ class Order extends Component {
 
   componentDidMount = async () => {
     const ordersResponse = await orderServer.get("/orders.json");
-    const ordersResponseArray = Object.entries(ordersResponse.data);
     const currentOrders = [];
-    for (let item of ordersResponseArray) {
-      currentOrders.push(item[1][0])
-    };
 
+    if (ordersResponse.data != null) {
+      const ordersResponseArray = Object.entries(ordersResponse.data);
+
+      for (let item of ordersResponseArray) {
+        currentOrders.push(item[1][0])
+      };
+    }
     // const currentOrders = [...ordersResponse.data];
 
     this.setState({ orders: currentOrders });

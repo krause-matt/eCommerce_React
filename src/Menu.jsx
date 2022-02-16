@@ -66,12 +66,16 @@ class Menu extends Component {
       items: itemFormattedResponse
     });
 
-    const ordersResponse = await orderServer.get("/orders.json");
-    const ordersResponseArray = Object.entries(ordersResponse.data);
     const currentOrders = [];
-    for (let item of ordersResponseArray) {
-      currentOrders.push(item[1][0])
-    }
+    const ordersResponse = await orderServer.get("/orders.json");
+
+    if (ordersResponse.data != null) {
+      const ordersResponseArray = Object.entries(ordersResponse.data);
+    
+      for (let item of ordersResponseArray) {
+        currentOrders.push(item[1][0])
+      }
+    }    
 
     // const currentOrders = [
     //   Object.entries(ordersResponse.data)[0][1][0],

@@ -57,27 +57,34 @@ class Cart extends Component {
 
 
   trashClick = async (orderId) => {
-    console.log("clicked order", orderId);
-    console.log("all orders", this.state.orders);
-    const index = (this.state.orders).indexOf(orderId);
-    console.log("index", index);
-    const removeOrder = await orderServer.delete(`/orders/${index}`);
-    // const refreshOrder = await orderServer.get("/orders");
-    // this.setState({ orders: refreshOrder.data })
+    const removeOrder = await orderServer.delete(`/orders/${orderId.id}.json`);
+    const refreshOrder = await orderServer.get("/orders.json");
+    const currentOrders = [];
 
-    // let grandTotal = 0;
+    if (refreshOrder.data != null) {
+      const refreshOrderArray = Object.entries(refreshOrder.data);
+
+      for (let item of refreshOrderArray) {
+        item[1][0].id = item[0];
+        currentOrders.push(item[1][0])
+      }
+    }
+
+    this.setState({ orders: currentOrders })
+
+    let grandTotal = 0;
     // const currentOrders = [...refreshOrder.data];
 
-    // for (const object of currentOrders) {
-    //   grandTotal += (object.price * object.quantity);
-    // }
+    for (const object of currentOrders) {
+      grandTotal += (object.price * object.quantity);
+    }
 
-    // let qtyCounter = 0;
-    // for (let pizza of currentOrders) {
-    //   qtyCounter += pizza.quantity;
-    // }
+    let qtyCounter = 0;
+    for (let pizza of currentOrders) {
+      qtyCounter += pizza.quantity;
+    }
 
-    // this.setState({ orderTotal: grandTotal, orderQty: qtyCounter })
+    this.setState({ orderTotal: grandTotal, orderQty: qtyCounter })
   }
 
   render() {
@@ -126,15 +133,17 @@ class Cart extends Component {
 
   componentDidMount = async () => {
     const serverResponse = await orderServer.get("/orders.json");
-    const ordersResponseArray = Object.entries(serverResponse.data);
-    console.log("ordersResponseArray", ordersResponseArray);
     const currentOrders = [];
-    for (let item of ordersResponseArray) {
-      console.log("item", item)
-      item[1][0].id = item[0];
-      currentOrders.push(item[1][0])
-      console.log("currentOrders", currentOrders)
-    };
+
+    if (serverResponse.data != null) {
+      const ordersResponseArray = Object.entries(serverResponse.data);
+
+      for (let item of ordersResponseArray) {
+        item[1][0].id = item[0];
+        currentOrders.push(item[1][0])
+      };
+    }
+
 
     //const currentOrders = [...serverResponse.data];    
     this.setState({ orders: currentOrders })
