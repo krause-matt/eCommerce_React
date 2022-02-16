@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 import orderServer from "./api/orders";
 import Navbar from "./Navbar";
@@ -132,6 +133,7 @@ class Order extends Component {
             </div>
           </div>
         </div>
+        <Link to={{ pathname: "/cart" }} className="btn btn-warning m-1" onClick={(e) => this.orderProcess(e)}>Add to Cart Test</Link>
         <a href="http://localhost:3000/cart" className="btn btn-success m-3" onClick={(event) => { this.orderProcess(event) }}>Add to Cart</a>
       </React.Fragment>
     );
@@ -206,6 +208,7 @@ class Order extends Component {
     this.setState({ orders: orderAdd })
 
     //const result = await orderServer.post("/orders.json", currentOrder);
+    console.log("orderAdd", orderAdd);
     const orderSend = await orderServer.post("/orders.json", orderAdd);
 
     const serverResponse = await orderServer.get("/orders.json");
