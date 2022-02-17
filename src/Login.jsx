@@ -67,17 +67,21 @@ class Login extends Component {
   }
 
   componentDidMount = async () => {
-    const orderResponse = await orderServer.get("/orders");
-    const orderArray = orderResponse.data;
+    const orderResponse = await orderServer.get("/orders.json");
+    let orderResponseArray = [];
+
+    if (orderResponse.data != null) {
+      orderResponseArray = Object.entries(orderResponse.data);
+    }
 
     const cookieExist = document.cookie.split("; ").find(row => row.startsWith("prev"));
 
     if (cookieExist) {
     } else {
-      if (orderArray) {
-        orderArray.forEach(async (order, index) => {
-          //let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)
-          await orderServer.delete(`/orders/${index + 1}`)
+      if (orderResponseArray != null) {
+        orderResponseArray.forEach(async (order, index) => {
+          let deleteOrder = await orderServer.delete(`/orders/${order[0]}.json`)
+          //await orderServer.delete(`/orders/${index + 1}`)
         })
       }
     }
