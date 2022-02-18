@@ -22,12 +22,24 @@ class Success extends Component {
   }
 
   componentDidMount = async () => {
-    const orderResponse = await orderServer.get("/orders");
-    const orderArray = orderResponse.data;
+    const ordersResponse = await orderServer.get("/orders.json");
+    const currentOrders = [];
 
-    if (orderArray) {
-      orderArray.forEach(async (order, index) => {
-        let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)
+    if (ordersResponse.data != null) {
+      const ordersResponseArray = Object.entries(ordersResponse.data);
+
+      for (let item of ordersResponseArray) {
+        let orderInput = item[1][0];
+        orderInput.id = item[0]
+        currentOrders.push(orderInput)
+      };
+    }
+    
+    
+
+    if (currentOrders) {
+      currentOrders.forEach(async (order, index) => {
+        let deleteOrder = await orderServer.delete(`/orders/${order.id}.json`)
       });
     }
   }
