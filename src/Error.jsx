@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Error extends Component {
   render() {
@@ -10,7 +11,7 @@ class Error extends Component {
           <hr className="my-4"></hr>
             <p>Please return to checkout and try again.</p>
             <p className="lead">
-              <a className="btn btn-primary btn-lg" href="http://localhost:3000/cart" role="button">Back to Cart</a>
+              <Link to={{ pathname: "/cart" }} className="btn btn-primary btn-lg">Back to Cart</Link>
             </p>
         </div>
       </div>
