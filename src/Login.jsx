@@ -81,7 +81,6 @@ class Login extends Component {
       if (orderResponseArray != null) {
         orderResponseArray.forEach(async (order, index) => {
           let deleteOrder = await orderServer.delete(`/orders/${order[0]}.json`)
-          //await orderServer.delete(`/orders/${index + 1}`)
         })
       }
     }

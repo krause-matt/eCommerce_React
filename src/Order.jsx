@@ -205,7 +205,6 @@ class Order extends Component {
     const orderAdd = [currentOrder];
     this.setState({ orders: orderAdd })
 
-    //const result = await orderServer.post("/orders.json", currentOrder);
     const orderSend = await orderServer.post("/orders.json", orderAdd);
 
     const serverResponse = await orderServer.get("/orders.json");
@@ -214,8 +213,6 @@ class Order extends Component {
     for (let item of ordersResponseArray) {
       currentOrders.push(item[1][0])
     };
-
-    //const currentOrders = [...serverResponse.data];
 
     this.setState({ orderNum: currentOrders.length })
   }
@@ -254,7 +251,6 @@ class Order extends Component {
         currentOrders.push(item[1][0])
       };
     }
-    // const currentOrders = [...ordersResponse.data];
 
     this.setState({ orders: currentOrders });
 

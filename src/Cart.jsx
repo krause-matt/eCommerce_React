@@ -5,10 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "./Navbar";
 import CartItem from "./CartItem";
 
-//const stripe = new Stripe(process.env.REACT_APP_STRIPE_SKEY);
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PKEY);
-
-//const product = await stripe.products.create({name: "Pizza"});
 
 class Cart extends Component {
 
@@ -71,7 +68,6 @@ class Cart extends Component {
     this.setState({ orders: currentOrders })
 
     let grandTotal = 0;
-    // const currentOrders = [...refreshOrder.data];
 
     for (const object of currentOrders) {
       grandTotal += (object.price * object.quantity);
@@ -142,9 +138,7 @@ class Cart extends Component {
         currentOrders.push(item[1][0])
       };
     }
-
-
-    //const currentOrders = [...serverResponse.data];    
+    
     this.setState({ orders: currentOrders })
 
     let grandTotal = 0;

@@ -77,12 +77,6 @@ class Menu extends Component {
       }
     }    
 
-    // const currentOrders = [
-    //   Object.entries(ordersResponse.data)[0][1][0],
-    //   Object.entries(ordersResponse.data)[1][1][0],
-    //   Object.entries(ordersResponse.data)[2][1][0]
-    // ]
-    
     this.setState({ orders: currentOrders });
 
     let qtyCounter = 0;

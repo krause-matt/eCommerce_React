@@ -19,9 +19,6 @@ class MenuItem extends Component {
             <div className="card-body">
               <div className="d-flex flex-column align-items-center">
                 <h4 className="card-title font-weight-bold">{this.state.item.pizza}</h4>
-                {/*
-                <img src="images/trash-solid.svg" width="40" height="20" className="pointer d-inline align-middle" onClick={() => this.props.deleteItem(this.state.item)} alt="" />
-                */}
                 <select className="mb-3 text-center" name="pizza-size" id={`${this.state.item.pizza}-size-select`} value={this.state.dropDownPrice} onChange={(e) => this.dropDownHandler(e)}>
                   <option data-size="Small" id={`size-${this.state.item.pizza}`} value={this.state.item.small}>{`Small: $${this.state.item.small}`}</option>
                   <option data-size="Medium" id={`size-${this.state.item.pizza}`} value={this.state.item.medium}>{`Medium: $${this.state.item.medium}`}</option>
