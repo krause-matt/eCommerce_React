@@ -13,7 +13,7 @@ class Success extends Component {
           <hr className="my-4"></hr>
             <p>Thank you for ordering at Pizza Place. We appreciate your business.</p>
             <p className="lead">
-              <a className="btn btn-primary btn-lg" href="http://localhost:3000/menu" role="button">Back to Menu</a>
+              <Link to={{ pathname: "/menu" }} className="btn btn-primary btn-lg">Back to Menu</Link>
             </p>
         </div>
       </div>
