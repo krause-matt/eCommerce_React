@@ -126,8 +126,8 @@ class Cart extends Component {
     const stripeProcess = await stripe.redirectToCheckout({
       lineItems: lineItems,
       mode: "payment",
-      successUrl: "http://localhost:3000/success",
-      cancelUrl: "http://localhost:3000/error",
+      successUrl: "http://ecommerce-pizza-place.herokuapp.com/success",
+      cancelUrl: "http://ecommerce-pizza-place.herokuapp.com/error",
     })
     console.log("stripeProcess", stripeProcess);
   }
