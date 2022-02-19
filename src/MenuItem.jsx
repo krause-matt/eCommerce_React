@@ -79,7 +79,6 @@ class MenuItem extends Component {
 
 
     this.setState({ dropDownSize: pizzaSize })
-    //EDIT HERE!!!!!!
     this.setState({ dropDownPrice: pizzaPrice })
   }
 

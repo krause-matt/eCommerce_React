@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import "./index.css";
 import orderServer from "./api/orders";
 import Navbar from "./Navbar";
@@ -242,7 +241,6 @@ class Order extends Component {
     pizzaBuild.medium = this.state.pizzaPrice[num - 1].medium;
     pizzaBuild.large = this.state.pizzaPrice[num - 1].large;
     this.setState({ currentItem: pizzaBuild, pizzaWarning: "" });
-
   }
 
   componentDidMount = async () => {
