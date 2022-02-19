@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 import orderServer from "./api/orders";
 import orders from "./api/orders";
@@ -13,7 +14,7 @@ class Success extends Component {
           <hr className="my-4"></hr>
             <p>Thank you for ordering at Pizza Place. We appreciate your business.</p>
             <p className="lead">
-              <a className="btn btn-primary btn-lg" href="http://localhost:3000/menu" role="button">Back to Menu</a>
+              <Link to={{ pathname: "/menu" }} className="btn btn-primary btn-lg">Back to Menu</Link>
             </p>
         </div>
       </div>
@@ -22,12 +23,24 @@ class Success extends Component {
   }
 
   componentDidMount = async () => {
-    const orderResponse = await orderServer.get("/orders");
-    const orderArray = orderResponse.data;
+    const ordersResponse = await orderServer.get("/orders.json");
+    const currentOrders = [];
 
-    if (orderArray) {
-      orderArray.forEach(async (order, index) => {
-        let deleteOrder = await orderServer.delete(`/orders/${index + 1}`)
+    if (ordersResponse.data != null) {
+      const ordersResponseArray = Object.entries(ordersResponse.data);
+
+      for (let item of ordersResponseArray) {
+        let orderInput = item[1][0];
+        orderInput.id = item[0]
+        currentOrders.push(orderInput)
+      };
+    }
+    
+    
+
+    if (currentOrders) {
+      currentOrders.forEach(async (order, index) => {
+        let deleteOrder = await orderServer.delete(`/orders/${order.id}.json`)
       });
     }
   }

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
 import orderServer from "./api/orders";
-
 import Navbar from "./Navbar";
 
 class Order extends Component {
@@ -133,7 +132,7 @@ class Order extends Component {
             </div>
           </div>
         </div>
-        <a href="http://localhost:3000/cart" className="btn btn-success m-3" onClick={(event) => { this.orderProcess(event) }}>Add to Cart</a>
+        <Link to={{ pathname: "/cart" }} className="btn btn-success m-3" onClick={(e) => this.orderProcess(e)}>Add to Cart</Link>
       </React.Fragment>
     );
   };
@@ -200,17 +199,24 @@ class Order extends Component {
     currentOrder.pizza = this.state.currentItem.pizza;
     currentOrder.size = this.state.sizeSelect;
     currentOrder.quantity = parseInt(this.state.incomingQuantity, 10);
-    //currentOrder.price = this.state.priceSelect;
     currentOrder.price = document.querySelector("input[name=size]:checked").value
     currentOrder.toppings = this.state.toppingSelect;
 
     const orderAdd = [currentOrder];
     this.setState({ orders: orderAdd })
 
-    const result = await orderServer.post("/orders", currentOrder);
+    //const result = await orderServer.post("/orders.json", currentOrder);
+    const orderSend = await orderServer.post("/orders.json", orderAdd);
 
-    const serverResponse = await orderServer.get("/orders");
-    const currentOrders = [...serverResponse.data];
+    const serverResponse = await orderServer.get("/orders.json");
+    const ordersResponseArray = Object.entries(serverResponse.data);
+    const currentOrders = [];
+    for (let item of ordersResponseArray) {
+      currentOrders.push(item[1][0])
+    };
+
+    //const currentOrders = [...serverResponse.data];
+
     this.setState({ orderNum: currentOrders.length })
   }
 
@@ -238,8 +244,18 @@ class Order extends Component {
   }
 
   componentDidMount = async () => {
-    const ordersResponse = await orderServer.get("/orders");
-    const currentOrders = [...ordersResponse.data];
+    const ordersResponse = await orderServer.get("/orders.json");
+    const currentOrders = [];
+
+    if (ordersResponse.data != null) {
+      const ordersResponseArray = Object.entries(ordersResponse.data);
+
+      for (let item of ordersResponseArray) {
+        currentOrders.push(item[1][0])
+      };
+    }
+    // const currentOrders = [...ordersResponse.data];
+
     this.setState({ orders: currentOrders });
 
     let qtyCounter = 0;
@@ -261,7 +277,7 @@ class Order extends Component {
 
       const pizzaId = document.location.href.split("#")[1];
       this.setState({ pizzaId: pizzaId });
-      const pizzaIdResponse = await orderServer.get(`items/${pizzaId}`);
+      const pizzaIdResponse = await orderServer.get(`items/${pizzaId - 1}.json`);
       this.setState({ currentItem: pizzaIdResponse.data });
     } else {
       this.setState({ noMenuSelection: true });

@@ -55,13 +55,23 @@ class Cart extends Component {
 
 
   trashClick = async (orderId) => {
+    const removeOrder = await orderServer.delete(`/orders/${orderId.id}.json`);
+    const refreshOrder = await orderServer.get("/orders.json");
+    const currentOrders = [];
 
-    const removeOrder = await orderServer.delete(`/orders/${orderId}`);
-    const refreshOrder = await orderServer.get("/orders");
-    this.setState({ orders: refreshOrder.data })
+    if (refreshOrder.data != null) {
+      const refreshOrderArray = Object.entries(refreshOrder.data);
+
+      for (let item of refreshOrderArray) {
+        item[1][0].id = item[0];
+        currentOrders.push(item[1][0])
+      }
+    }
+
+    this.setState({ orders: currentOrders })
 
     let grandTotal = 0;
-    const currentOrders = [...refreshOrder.data];
+    // const currentOrders = [...refreshOrder.data];
 
     for (const object of currentOrders) {
       grandTotal += (object.price * object.quantity);
@@ -91,7 +101,7 @@ class Cart extends Component {
           </div>
           <div className="col-md-6">
             <h3 className="ml-3">{`Grand Total: $${this.state.orderTotal}`}</h3>
-            <button className="btn btn-success m-3" onClick={this.stripePay}>Pay with Card</button>
+            { this.state.orders != "" ? <button className="btn btn-success m-3" onClick={this.stripePay}>Pay with Card</button> : ""}
           </div>
         </div>
       </React.Fragment>
@@ -100,6 +110,7 @@ class Cart extends Component {
 
   stripePay = async () => {
     let lineItems = []
+
     this.state.orders.forEach(order => {
       const pizzaString = order.pizza;
       const sizeString = order.size
@@ -110,17 +121,30 @@ class Cart extends Component {
     })
 
     const stripe = await stripePromise;
-    const { error } = await stripe.redirectToCheckout({
+    const stripeProcess = await stripe.redirectToCheckout({
       lineItems: lineItems,
       mode: "payment",
-      successUrl: "http://localhost:3000/success",
-      cancelUrl: "http://localhost:3000/error",
+      successUrl: "http://ecommerce-pizza-place.herokuapp.com/success",
+      cancelUrl: "http://ecommerce-pizza-place.herokuapp.com/error",
     })
+    console.log("stripeProcess", stripeProcess);
   }
 
   componentDidMount = async () => {
-    const serverResponse = await orderServer.get("/orders");
-    const currentOrders = [...serverResponse.data];
+    const serverResponse = await orderServer.get("/orders.json");
+    const currentOrders = [];
+
+    if (serverResponse.data != null) {
+      const ordersResponseArray = Object.entries(serverResponse.data);
+
+      for (let item of ordersResponseArray) {
+        item[1][0].id = item[0];
+        currentOrders.push(item[1][0])
+      };
+    }
+
+
+    //const currentOrders = [...serverResponse.data];    
     this.setState({ orders: currentOrders })
 
     let grandTotal = 0;

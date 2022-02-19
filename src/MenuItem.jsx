@@ -59,9 +59,9 @@ class MenuItem extends Component {
       cartAdd.quantity = this.state.item.quantity;
       cartAdd.price = pizzaPrice;
       cartAdd.toppings = null;
+      const cartAddArray = [cartAdd];
 
-      const toCartResponse = await orderServer.post("/orders", cartAdd);
-
+      const toCartResponse = await orderServer.post("/orders.json", cartAddArray);
     }
   }
 
