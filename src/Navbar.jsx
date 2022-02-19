@@ -13,7 +13,7 @@ class Navbar extends Component {
             <Link className="navbar-brand" to="/" onClick={this.setCookie}>
               <img src="images/pizza.svg" width="60" height="60" className="d-inline-block align-top" alt="" />
             </Link>
-            <Link to="/" onClick={this.setCookie}><h1 className="d-inline-block page-title"><b>Pizza Place Test</b></h1></Link>
+            <Link to="/" onClick={this.setCookie}><h1 className="d-inline-block page-title"><b>The Pizza Place</b></h1></Link>
           </div>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>

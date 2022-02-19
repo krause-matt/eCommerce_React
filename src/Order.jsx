@@ -133,8 +133,7 @@ class Order extends Component {
             </div>
           </div>
         </div>
-        <Link to={{ pathname: "/cart" }} className="btn btn-warning m-1" onClick={(e) => this.orderProcess(e)}>Add to Cart Test</Link>
-        <a href="http://localhost:3000/cart" className="btn btn-success m-3" onClick={(event) => { this.orderProcess(event) }}>Add to Cart</a>
+        <Link to={{ pathname: "/cart" }} className="btn btn-success m-3" onClick={(e) => this.orderProcess(e)}>Add to Cart</Link>
       </React.Fragment>
     );
   };
