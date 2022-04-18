@@ -40,21 +40,39 @@ class Navbar extends Component {
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item mx-3">
+              <li
+                className={
+                  window.location.pathname === "/menu"
+                    ? "nav-item mx-3 active"
+                    : "nav-item mx-3"
+                }
+              >
                 <Link to="/menu" className="nav-link">
                   <h3>
                     <b>Menu</b>
                   </h3>
                 </Link>
               </li>
-              <li className="nav-item mx-3">
+              <li
+                className={
+                  window.location.pathname === "/order"
+                    ? "nav-item mx-3 active"
+                    : "nav-item mx-3"
+                }
+              >
                 <Link to="/order" className="nav-link">
                   <h3>
                     <b>Order</b>
                   </h3>
                 </Link>
               </li>
-              <li className="nav-item ml-3">
+              <li
+                className={
+                  window.location.pathname === "/cart"
+                    ? "nav-item mx-3 active"
+                    : "nav-item mx-3"
+                }
+              >
                 <Link to="/cart" className="nav-link">
                   <h3>
                     <b>Cart</b>
