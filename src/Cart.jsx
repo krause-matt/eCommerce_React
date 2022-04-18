@@ -124,8 +124,8 @@ class Cart extends Component {
       mode: "payment",
       // successUrl: "http://ecommerce-pizza-place.herokuapp.com/success",
       // cancelUrl: "http://ecommerce-pizza-place.herokuapp.com/error",
-      successUrl: "https://the-pizzaplace.netlify.app/success",
-      cancelUrl: "https://the-pizzaplace.netlify.app/error",
+      successUrl: "http://the-pizzaplace.netlify.app/success",
+      cancelUrl: "http://the-pizzaplace.netlify.app/error",
     });
     console.log("stripeProcess", stripeProcess);
   };
